@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Background } from "./components/Background";
 import { TreeToggle } from "./components/TreeToggle";
 import { Breadcrumb } from "./components/Breadcrumb";
-import { TreeCanvas } from "./components/TreeCanvas";
-import { DetailPanel } from "./components/DetailPanel";
+import { ImmersiveCard } from "./components/ImmersiveCard";
 import { trees } from "./data/trees";
 import { useTreeExplorer } from "./hooks/useTreeExplorer";
 import type { TreeDef, TreeNode } from "./types";
@@ -11,62 +10,40 @@ import type { TreeDef, TreeNode } from "./types";
 function App() {
   const [activeTree, setActiveTree] = useState<TreeDef>(trees[0]);
   const explorer = useTreeExplorer(activeTree);
-  const [panelNode, setPanelNode] = useState<TreeNode | null>(activeTree.root);
 
   const handleTreeChange = (tree: TreeDef) => {
     if (tree.id === activeTree.id) return;
     setActiveTree(tree);
     explorer.reset(tree.root);
-    setPanelNode(tree.root);
   };
 
   const handleSelectChild = (child: TreeNode) => {
     explorer.goToChild(child);
-    setPanelNode(child);
-  };
-
-  const handleSelectGrandchild = (child: TreeNode, grandchild: TreeNode) => {
-    explorer.goToPath([child, grandchild]);
-    setPanelNode(grandchild);
-  };
-
-  const handleSelectFocus = () => {
-    const target = explorer.path[explorer.path.length - 2];
-    explorer.goToAncestor(explorer.path.length - 2);
-    setPanelNode(target ?? null);
   };
 
   const handleBreadcrumbJump = (index: number) => {
     explorer.goToAncestor(index);
-    setPanelNode(explorer.path[index]);
   };
 
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative flex h-screen w-screen flex-col">
       <Background />
 
-      <header className="pointer-events-none absolute left-1/2 top-5 z-20 flex w-[min(94vw,720px)] -translate-x-1/2 flex-col items-center gap-3">
-        <div className="pointer-events-auto">
-          <TreeToggle trees={trees} activeId={activeTree.id} onChange={handleTreeChange} />
-        </div>
-        <div className="pointer-events-auto">
-          <Breadcrumb path={explorer.path} onJump={handleBreadcrumbJump} />
-        </div>
-        <p className="text-xs text-bone-100/35">{activeTree.tagline}</p>
+      <header className="z-20 flex w-full shrink-0 flex-col items-center gap-3 px-3 pt-5">
+        <TreeToggle trees={trees} activeId={activeTree.id} onChange={handleTreeChange} />
+        <Breadcrumb path={explorer.path} onJump={handleBreadcrumbJump} />
+        <p className="text-center text-xs text-bone-100/35">{activeTree.tagline}</p>
       </header>
 
-      <main className="h-full w-full">
-        <TreeCanvas
-          focus={explorer.focus}
+      <main className="relative min-h-0 w-full flex-1">
+        <ImmersiveCard
+          node={explorer.focus}
           direction={explorer.direction}
-          onSelectChild={handleSelectChild}
-          onSelectGrandchild={handleSelectGrandchild}
-          onSelectFocus={handleSelectFocus}
           canGoUp={explorer.canGoUp}
+          onSelectChild={handleSelectChild}
+          onGoUp={explorer.goUp}
         />
       </main>
-
-      <DetailPanel node={panelNode} onClose={() => setPanelNode(null)} />
     </div>
   );
 }

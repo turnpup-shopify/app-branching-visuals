@@ -1,9 +1,10 @@
 # Branching Visuals
 
-An immersive, zoomable explorer for branching life maps — Ikigai, long-term work
-vision ("slow layers"), or any tree-shaped idea. Tap a node to dive into its
-branch, pan and zoom freely, and keep a glass-styled detail panel with notes,
-links, and images for whatever you're looking at.
+An immersive card explorer for branching life maps — Ikigai, long-term work
+vision ("slow layers"), or any tree-shaped idea. Each screen is a full glass
+card for the node you're on, with its notes, links, and image inline, and a
+row of buttons at the bottom for diving into its children. A breadcrumb trail
+up top lets you jump back to any ancestor.
 
 ## Run it
 
@@ -27,7 +28,7 @@ A node looks like this (see `src/types.ts`):
   id: "love-1",
   title: "Writing",
   blurb: "Passion",
-  description: "Longer note shown in the detail panel.",
+  description: "Longer note shown on the card.",
   links: [{ label: "Blog", url: "https://..." }],
   image: "https://...",
   children: [/* nested nodes */],
@@ -39,7 +40,7 @@ Add a new tree by creating a file like the existing ones and adding it to the
 
 ## Stack
 
-Vite, React, TypeScript, Tailwind CSS v4, Framer Motion, lucide-react. The
-radial layout and pan/zoom are hand-rolled (`src/layout/radial.ts`,
-`src/hooks/usePanZoom.ts`) — no graph-visualization dependency.
+Vite, React, TypeScript, Tailwind CSS v4, Framer Motion, lucide-react. Navigation
+is plain path state (`src/hooks/useTreeExplorer.ts`) — no graph-visualization
+dependency.
 </content>

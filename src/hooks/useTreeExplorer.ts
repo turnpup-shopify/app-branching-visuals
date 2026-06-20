@@ -14,11 +14,6 @@ export function useTreeExplorer(tree: TreeDef) {
     setPath((p) => [...p, child]);
   }, []);
 
-  const goToPath = useCallback((nodes: TreeNode[]) => {
-    setDirection("in");
-    setPath((p) => [...p, ...nodes]);
-  }, []);
-
   const goToAncestor = useCallback((index: number) => {
     setDirection("out");
     setPath((p) => p.slice(0, index + 1));
@@ -42,7 +37,7 @@ export function useTreeExplorer(tree: TreeDef) {
   const canGoUp = path.length > 1;
 
   return useMemo(
-    () => ({ path, focus, direction, goToChild, goToPath, goToAncestor, goUp, goHome, reset, canGoUp }),
-    [path, focus, direction, goToChild, goToPath, goToAncestor, goUp, goHome, reset, canGoUp],
+    () => ({ path, focus, direction, goToChild, goToAncestor, goUp, goHome, reset, canGoUp }),
+    [path, focus, direction, goToChild, goToAncestor, goUp, goHome, reset, canGoUp],
   );
 }
