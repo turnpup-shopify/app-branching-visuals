@@ -1,5 +1,6 @@
 name: Deploy to GitHub Pages
 
+# live at https://turnpup-shopify.github.io/app-branching-visuals/
 on:
   push:
     branches:
