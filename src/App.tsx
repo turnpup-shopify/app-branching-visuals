@@ -26,7 +26,7 @@ function App() {
   };
 
   return (
-    <div className="relative flex h-screen w-screen flex-col">
+    <div className="relative flex h-dvh w-screen flex-col">
       <Background />
 
       <header className="z-20 flex w-full shrink-0 flex-col items-center gap-3 px-3 pt-5">

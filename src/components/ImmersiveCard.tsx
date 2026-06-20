@@ -83,7 +83,7 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 p-6">
+          <div className="flex flex-col gap-5 p-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
             {node.description && (
               <p className="text-sm leading-relaxed text-bone-100/75">{node.description}</p>
             )}
