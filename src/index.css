@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* palette lifted from the reference poster: bone cream, ink-blue, halftone, signal orange */
+  --color-bone-50: #fbf8f1;
+  --color-bone-100: #f4eee0;
+  --color-bone-200: #e9e0c9;
+  --color-bone-300: #d8caa8;
+
+  --color-ink-400: #4451c2;
+  --color-ink-500: #2f3aa8;
+  --color-ink-600: #1f2a86;
+  --color-ink-700: #161f63;
+  --color-ink-800: #0f1542;
+  --color-ink-900: #090c2b;
+
+  --color-signal-400: #ff7a4a;
+  --color-signal-500: #f2541c;
+  --color-signal-600: #d8430f;
+
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ink-900);
+    color: var(--color-bone-50);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 8px 32px rgba(9, 12, 43, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .glass-strong {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06));
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow: 0 12px 40px rgba(9, 12, 43, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
