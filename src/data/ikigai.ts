@@ -15,13 +15,12 @@ export const ikigaiTree: TreeDef = {
       {
         id: "north-stars",
         title: "🧭 My North Stars",
-        blurb: "The why behind big decisions",
+        blurb: "Slow layering",
         accent: "ink",
         children: [
-          { id: "north-1", title: "The why behind big decisions" },
-          { id: "north-2", title: "Best in class accumulation of marketing / design" },
-          { id: "north-3", title: "Content: unpacking the why" },
-          { id: "north-4", title: "Home goods / items that promote creative & intentional (slow) thinking" },
+          { id: "north-1", title: "Home goods that promote creative & intentional (slow) thinking" },
+          { id: "north-2", title: "Marketing / design knowledge" },
+          { id: "north-3", title: "Creative home experiences" },
         ],
       },
       {
