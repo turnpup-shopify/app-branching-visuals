@@ -64,27 +64,24 @@ export const ikigaiTree: TreeDef = {
         children: [
           {
             id: "strength-1",
-            title: "An emphasis on the why",
+            title: "Maker",
+            blurb: "Design + Technical + Analytical + Open-Minded",
             description:
-              "You don't start with what to build — you start with why it matters. This gives your work unusual clarity and staying power. When most people are chasing tactics, you're anchoring to purpose. That orientation makes your decisions more defensible, your creative work more coherent, and your pitch more compelling. People trust work that has a reason behind it.",
+              "You can operate in all four modes — and switch between them without losing the thread. Most people are strong in one, maybe two. You can feel what a design needs, build or spec the technical solution, pressure-test it with data, and stay genuinely open when the answer surprises you. That range means you can hold a project end-to-end and earn the trust of every kind of collaborator.",
           },
           {
             id: "strength-2",
-            title: "Data-driven",
+            title: "Intentional Pattern Finder",
+            blurb: "Why, why, why",
             description:
-              "You use numbers the way a good editor uses grammar — to sharpen, not to bury. You're comfortable in the metrics but you don't stop there. You know how to find the signal in the noise, translate it into a story, and use it to make a sharper creative call. That combination — quantitative rigor plus creative instinct — is rare and hard to teach.",
+              "You don't stop at what's happening — you keep asking why until you reach the thing underneath. That habit turns surface observations into durable insight. A signal in one category becomes a principle that applies three categories over. Most people collect data points; you build a model. The model is the asset, and it compounds.",
           },
           {
             id: "strength-3",
-            title: "Love of design",
+            title: "Hard Things",
+            blurb: "Empathy, Patience, Focus",
             description:
-              "Design for you isn't decoration — it's thinking made visible. You notice the things most people walk past: the hierarchy that pulls your eye, the color choice that sets a mood, the one decision that makes a space or a page feel intentional. That sensitivity shapes how you brief, how you edit, and how high your bar is for what ships.",
-          },
-          {
-            id: "strength-4",
-            title: "Pattern finder",
-            description:
-              "You see across categories in a way most people can't — because you go underneath the surface to the underlying why. A behavior you observed in athletic apparel informs a merchandising call in home goods. A conversion pattern from one channel teaches you something about another. You don't just collect data points; you build a mental model of how things actually work, and that model travels.",
+              "These are the skills most people talk about and few actually practice. Empathy means you can inhabit someone else's perspective long enough to make something that serves them. Patience means you don't reach for the shortcut when the slow path is the right one. Focus means you can stay on the one thing when everything around you is pulling for attention. Together they make the difference between work that is technically correct and work that actually lands.",
           },
         ],
       },
