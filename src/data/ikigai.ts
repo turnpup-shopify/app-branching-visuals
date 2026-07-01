@@ -15,12 +15,45 @@ export const ikigaiTree: TreeDef = {
       {
         id: "north-stars",
         title: "🧭 My North Stars",
-        blurb: "Slow layering",
+        blurb: "A life that awes, sparks thought, & slows",
         accent: "ink",
         children: [
-          { id: "north-1", title: "Home goods that promote creative & intentional (slow) thinking" },
-          { id: "north-2", title: "Marketing / design knowledge" },
-          { id: "north-3", title: "Creative home experiences" },
+          {
+            id: "ns-products",
+            title: "🛖 Products",
+            blurb: "Physical forms that slow and inspire",
+            accent: "ink",
+            children: [
+              { id: "ns-p-1", title: "Shelves" },
+              { id: "ns-p-2", title: "Hooks" },
+              { id: "ns-p-3", title: "Stools" },
+              { id: "ns-p-4", title: "Small tables" },
+              { id: "ns-p-5", title: "Stackable" },
+              { id: "ns-p-6", title: "Modular" },
+            ],
+          },
+          {
+            id: "ns-portals",
+            title: "🖥️ Portals",
+            blurb: "Digital surfaces that open a world",
+            accent: "ink",
+            children: [
+              { id: "ns-po-1", title: "Galleries" },
+              { id: "ns-po-2", title: "Marketing" },
+            ],
+          },
+          {
+            id: "ns-interactions",
+            title: "🪬 Interactions",
+            blurb: "The human and systemic layer",
+            accent: "ink",
+            children: [
+              { id: "ns-i-1", title: "Small systems" },
+              { id: "ns-i-2", title: "Meetings" },
+              { id: "ns-i-3", title: "Processes" },
+              { id: "ns-i-4", title: "Questions" },
+            ],
+          },
         ],
       },
       {
@@ -78,6 +111,14 @@ export const ikigaiTree: TreeDef = {
           { id: "love-4", title: "Public installations that make you think and feel awe" },
           { id: "love-5", title: "Dune / spy shows" },
         ],
+      },
+      {
+        id: "start-more",
+        title: "✨ Start More",
+        blurb: "Stay in the present",
+        description:
+          "Not all about achievement.\n\nIt's about creating more awe, inspiring thought, and intentionality.",
+        accent: "ink",
       },
       {
         id: "accomplishments",
