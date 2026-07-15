@@ -11,20 +11,26 @@ import { useTreeExplorer } from "./hooks/useTreeExplorer";
 import { applyOverride, applyOverrides } from "./utils/treeUtils";
 import type { TreeDef, TreeNode } from "./types";
 
-const STORAGE_KEY = "bv-overrides";
+const OV_KEY = "bv-overrides";
+const ADD_KEY = "bv-additions";
 
-function loadOverrides(): Record<string, Partial<TreeNode>> {
+function load<T>(key: string, fallback: T): T {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
+    return JSON.parse(localStorage.getItem(key) ?? "null") ?? fallback;
   } catch {
-    return {};
+    return fallback;
   }
 }
 
 function App() {
   const [activeTree, setActiveTree] = useState<TreeDef>(trees[0]);
   const [editMode, setEditMode] = useState(false);
-  const [overrides, setOverrides] = useState<Record<string, Partial<TreeNode>>>(loadOverrides);
+  const [overrides, setOverrides] = useState<Record<string, Partial<TreeNode>>>(() =>
+    load(OV_KEY, {}),
+  );
+  const [additions, setAdditions] = useState<Record<string, TreeNode[]>>(() =>
+    load(ADD_KEY, {}),
+  );
   const explorer = useTreeExplorer(activeTree);
 
   const handleTreeChange = (tree: TreeDef) => {
@@ -36,13 +42,26 @@ function App() {
   const handleUpdateNode = useCallback((nodeId: string, updates: Partial<TreeNode>) => {
     setOverrides((prev) => {
       const next = { ...prev, [nodeId]: { ...prev[nodeId], ...updates } };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      localStorage.setItem(OV_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const handleAddChild = useCallback((parentId: string) => {
+    const newNode: TreeNode = {
+      id: `node-${Date.now()}`,
+      title: "",
+      accent: "ink",
+    };
+    setAdditions((prev) => {
+      const next = { ...prev, [parentId]: [...(prev[parentId] ?? []), newNode] };
+      localStorage.setItem(ADD_KEY, JSON.stringify(next));
       return next;
     });
   }, []);
 
   const livePath = explorer.path.map((n) => applyOverride(n, overrides));
-  const liveNode = applyOverrides(explorer.focus, overrides);
+  const liveNode = applyOverrides(explorer.focus, overrides, additions);
 
   return (
     <div className="relative flex h-dvh w-screen flex-col">
@@ -74,7 +93,9 @@ function App() {
               key="edit"
               trees={trees}
               overrides={overrides}
+              additions={additions}
               onUpdate={handleUpdateNode}
+              onAddChild={handleAddChild}
               onClose={() => setEditMode(false)}
             />
           ) : (

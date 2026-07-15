@@ -5,18 +5,14 @@ export function applyOverride(node: TreeNode, ov: Record<string, Partial<TreeNod
   return patch ? { ...node, ...patch } : node;
 }
 
-export function applyOverrides(node: TreeNode, ov: Record<string, Partial<TreeNode>>): TreeNode {
-  const live = applyOverride(node, ov);
-  if (!live.children) return live;
-  return { ...live, children: live.children.map((c) => applyOverride(c, ov)) };
-}
-
-export function flattenTree(
+export function applyOverrides(
   node: TreeNode,
-  depth = 0,
-): Array<{ node: TreeNode; depth: number }> {
-  return [
-    { node, depth },
-    ...(node.children ?? []).flatMap((c) => flattenTree(c, depth + 1)),
-  ];
+  ov: Record<string, Partial<TreeNode>>,
+  additions: Record<string, TreeNode[]> = {},
+): TreeNode {
+  const live = applyOverride(node, ov);
+  const originalChildren = live.children ?? [];
+  const addedChildren = additions[node.id] ?? [];
+  const allChildren = [...originalChildren, ...addedChildren].map((c) => applyOverride(c, ov));
+  return allChildren.length > 0 ? { ...live, children: allChildren } : live;
 }
