@@ -1,11 +1,14 @@
 import { useCallback, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Pencil, PencilOff } from "lucide-react";
 import { Background } from "./components/Background";
 import { TreeToggle } from "./components/TreeToggle";
 import { Breadcrumb } from "./components/Breadcrumb";
 import { ImmersiveCard } from "./components/ImmersiveCard";
+import { EditPanel } from "./components/EditPanel";
 import { trees } from "./data/trees";
 import { useTreeExplorer } from "./hooks/useTreeExplorer";
+import { applyOverride, applyOverrides } from "./utils/treeUtils";
 import type { TreeDef, TreeNode } from "./types";
 
 const STORAGE_KEY = "bv-overrides";
@@ -16,17 +19,6 @@ function loadOverrides(): Record<string, Partial<TreeNode>> {
   } catch {
     return {};
   }
-}
-
-function applyOverride(node: TreeNode, ov: Record<string, Partial<TreeNode>>): TreeNode {
-  const patch = ov[node.id];
-  return patch ? { ...node, ...patch } : node;
-}
-
-function applyOverrides(node: TreeNode, ov: Record<string, Partial<TreeNode>>): TreeNode {
-  const live = applyOverride(node, ov);
-  if (!live.children) return live;
-  return { ...live, children: live.children.map((c) => applyOverride(c, ov)) };
 }
 
 function App() {
@@ -76,15 +68,34 @@ function App() {
       </header>
 
       <main className="relative min-h-0 w-full flex-1">
-        <ImmersiveCard
-          node={liveNode}
-          direction={explorer.direction}
-          canGoUp={explorer.canGoUp}
-          onSelectChild={(child) => explorer.goToChild(child)}
-          onGoUp={explorer.goUp}
-          editMode={editMode}
-          onUpdate={(updates) => handleUpdateNode(explorer.focus.id, updates)}
-        />
+        <AnimatePresence mode="wait">
+          {editMode ? (
+            <EditPanel
+              key="edit"
+              trees={trees}
+              overrides={overrides}
+              onUpdate={handleUpdateNode}
+              onClose={() => setEditMode(false)}
+            />
+          ) : (
+            <motion.div
+              key="card"
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              <ImmersiveCard
+                node={liveNode}
+                direction={explorer.direction}
+                canGoUp={explorer.canGoUp}
+                onSelectChild={(child) => explorer.goToChild(child)}
+                onGoUp={explorer.goUp}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
