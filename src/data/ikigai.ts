@@ -6,10 +6,8 @@ export const ikigaiTree: TreeDef = {
   tagline: "The compass behind how you decide, create, and live.",
   root: {
     id: "ikigai-root",
-    title: "My Compass",
+    title: "Ikigai",
     blurb: "Five lenses, one direction",
-    description:
-      "What guides big decisions, what comes naturally, what you hold onto, and what genuinely lights you up.",
     accent: "signal",
     children: [
       {
