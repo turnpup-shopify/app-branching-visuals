@@ -9,6 +9,8 @@ interface Props {
   canGoUp: boolean;
   onSelectChild: (child: TreeNode) => void;
   onGoUp: () => void;
+  editMode?: boolean;
+  onUpdate?: (updates: Partial<TreeNode>) => void;
 }
 
 const ACCENT_HERO: Record<NodeAccent, string> = {
@@ -37,7 +39,17 @@ const cardVariants: Variants = {
   }),
 };
 
-export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp }: Props) {
+const editBase = "w-full bg-transparent focus:outline-none border-b border-white/20 focus:border-signal-400/60 transition-colors";
+
+export function ImmersiveCard({
+  node,
+  direction,
+  canGoUp,
+  onSelectChild,
+  onGoUp,
+  editMode = false,
+  onUpdate,
+}: Props) {
   const accent = node.accent ?? "signal";
   const children = node.children ?? [];
 
@@ -53,6 +65,7 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
           exit="exit"
           className="glass-strong absolute inset-0 flex flex-col overflow-y-auto rounded-3xl scrollbar-none"
         >
+          {/* Hero header */}
           <div className={`relative shrink-0 bg-gradient-to-b ${ACCENT_HERO[accent]}`}>
             {node.image && (
               <img
@@ -76,18 +89,51 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
 
             <div className="relative flex min-h-[11rem] flex-col items-start justify-end gap-1.5 p-6 pt-16">
               {!node.image && <Sparkles size={20} className="mb-1 text-signal-400" />}
-              <h1 className="font-display text-2xl font-semibold leading-tight text-bone-50 md:text-3xl">
-                {node.title}
-              </h1>
-              {node.blurb && <p className="text-sm font-medium text-signal-400">{node.blurb}</p>}
+
+              {editMode ? (
+                <input
+                  value={node.title}
+                  onChange={(e) => onUpdate?.({ title: e.target.value })}
+                  placeholder="Title"
+                  className={`${editBase} font-display text-2xl font-semibold text-bone-50`}
+                />
+              ) : (
+                <h1 className="font-display text-2xl font-semibold leading-tight text-bone-50 md:text-3xl">
+                  {node.title}
+                </h1>
+              )}
+
+              {editMode ? (
+                <input
+                  value={node.blurb ?? ""}
+                  onChange={(e) => onUpdate?.({ blurb: e.target.value })}
+                  placeholder="Short subtitle…"
+                  className={`${editBase} text-sm font-medium text-signal-400 placeholder:text-signal-400/40`}
+                />
+              ) : (
+                node.blurb && (
+                  <p className="text-sm font-medium text-signal-400">{node.blurb}</p>
+                )
+              )}
             </div>
           </div>
 
+          {/* Body */}
           <div className="flex flex-col gap-5 p-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            {node.description && (
-              <p className="whitespace-pre-line text-sm leading-relaxed text-bone-100/75">
-                {node.description}
-              </p>
+            {editMode ? (
+              <textarea
+                value={node.description ?? ""}
+                onChange={(e) => onUpdate?.({ description: e.target.value })}
+                placeholder="Description… (press Enter for line breaks)"
+                rows={5}
+                className="w-full resize-none rounded-xl border border-white/10 bg-transparent p-3 text-sm leading-relaxed text-bone-100/75 placeholder:text-bone-100/25 focus:border-signal-400/40 focus:outline-none transition-colors"
+              />
+            ) : (
+              node.description && (
+                <p className="whitespace-pre-line text-sm leading-relaxed text-bone-100/75">
+                  {node.description}
+                </p>
+              )
             )}
 
             {node.links?.length ? (
@@ -115,8 +161,10 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
                 {children.map((child) => (
                   <button
                     key={child.id}
-                    onClick={() => onSelectChild(child)}
-                    className="glass flex items-center justify-between gap-3 rounded-2xl px-4 py-3.5 text-left transition-colors hover:bg-white/15"
+                    onClick={() => !editMode && onSelectChild(child)}
+                    className={`glass flex items-center justify-between gap-3 rounded-2xl px-4 py-3.5 text-left transition-colors ${
+                      editMode ? "cursor-default opacity-50" : "hover:bg-white/15"
+                    }`}
                   >
                     <span>
                       <span className="font-display block text-[15px] font-semibold text-bone-50">
@@ -131,9 +179,11 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
                 ))}
               </div>
             ) : (
-              <p className="text-xs uppercase tracking-wide text-bone-100/40">
-                End of this branch
-              </p>
+              !editMode && (
+                <p className="text-xs uppercase tracking-wide text-bone-100/40">
+                  End of this branch
+                </p>
+              )
             )}
           </div>
         </motion.div>
