@@ -74,16 +74,16 @@ export function ImmersiveCard({ node, direction, canGoUp, onSelectChild, onGoUp 
               </button>
             )}
 
-            <div className="relative flex min-h-[11rem] flex-col items-start justify-end gap-1.5 p-6 pt-16">
-              {!node.image && <Sparkles size={20} className="mb-1 text-signal-400" />}
-              <h1 className="font-display text-2xl font-semibold leading-tight text-bone-50 md:text-3xl">
+            <div className="relative flex min-h-[7rem] flex-col items-start justify-end gap-1 p-4 pt-10">
+              {!node.image && <Sparkles size={15} className="mb-0.5 text-signal-400" />}
+              <h1 className="font-display text-xl font-semibold leading-tight text-bone-50 md:text-2xl">
                 {node.title}
               </h1>
-              {node.blurb && <p className="text-sm font-medium text-signal-400">{node.blurb}</p>}
+              {node.blurb && <p className="text-xs font-medium text-signal-400">{node.blurb}</p>}
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 p-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
+          <div className="flex flex-col gap-4 p-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             {node.description && (
               <p className="whitespace-pre-line text-sm leading-relaxed text-bone-100/75">
                 {node.description}

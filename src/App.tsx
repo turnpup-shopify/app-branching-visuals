@@ -67,23 +67,22 @@ function App() {
     <div className="relative flex h-dvh w-screen flex-col">
       <Background />
 
-      <header className="z-20 flex w-full shrink-0 flex-col items-center gap-3 px-3 pt-5">
+      <header className="z-20 flex w-full shrink-0 flex-col items-center gap-1.5 px-3 pt-3">
         <div className="flex items-center gap-2">
           <TreeToggle trees={trees} activeId={activeTree.id} onChange={handleTreeChange} />
           <button
             onClick={() => setEditMode((e) => !e)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs backdrop-blur-md transition-colors ${
+            className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs backdrop-blur-md transition-colors ${
               editMode
                 ? "bg-signal-500/30 text-signal-300"
                 : "bg-ink-900/30 text-bone-100/40 hover:text-bone-100/70"
             }`}
           >
-            {editMode ? <PencilOff size={13} /> : <Pencil size={13} />}
+            {editMode ? <PencilOff size={12} /> : <Pencil size={12} />}
             {editMode ? "Done" : "Edit"}
           </button>
         </div>
         <Breadcrumb path={livePath} onJump={(i) => explorer.goToAncestor(i)} />
-        <p className="text-center text-xs text-bone-100/35">{activeTree.tagline}</p>
       </header>
 
       <main className="relative min-h-0 w-full flex-1">
