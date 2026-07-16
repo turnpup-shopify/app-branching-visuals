@@ -5,14 +5,32 @@ export function applyOverride(node: TreeNode, ov: Record<string, Partial<TreeNod
   return patch ? { ...node, ...patch } : node;
 }
 
+function reorderChildren(
+  children: TreeNode[],
+  parentId: string,
+  reorders: Record<string, string[]>,
+): TreeNode[] {
+  const order = reorders[parentId];
+  if (!order) return children;
+  return [
+    ...order.flatMap((id) => {
+      const n = children.find((c) => c.id === id);
+      return n ? [n] : [];
+    }),
+    ...children.filter((c) => !order.includes(c.id)),
+  ];
+}
+
 export function applyOverrides(
   node: TreeNode,
   ov: Record<string, Partial<TreeNode>>,
   additions: Record<string, TreeNode[]> = {},
+  reorders: Record<string, string[]> = {},
 ): TreeNode {
   const live = applyOverride(node, ov);
   const originalChildren = live.children ?? [];
   const addedChildren = additions[node.id] ?? [];
   const allChildren = [...originalChildren, ...addedChildren].map((c) => applyOverride(c, ov));
-  return allChildren.length > 0 ? { ...live, children: allChildren } : live;
+  const ordered = reorderChildren(allChildren, node.id, reorders);
+  return ordered.length > 0 ? { ...live, children: ordered } : live;
 }

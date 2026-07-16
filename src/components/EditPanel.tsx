@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus } from "lucide-react";
 import type { TreeDef, TreeNode } from "../types";
 import { applyOverride } from "../utils/treeUtils";
 
@@ -7,12 +7,23 @@ interface Props {
   trees: TreeDef[];
   overrides: Record<string, Partial<TreeNode>>;
   additions: Record<string, TreeNode[]>;
+  reorders: Record<string, string[]>;
   onUpdate: (nodeId: string, updates: Partial<TreeNode>) => void;
   onAddChild: (parentId: string) => void;
+  onReorder: (parentId: string, orderedIds: string[]) => void;
   onClose: () => void;
 }
 
-export function EditPanel({ trees, overrides, additions, onUpdate, onAddChild, onClose }: Props) {
+export function EditPanel({
+  trees,
+  overrides,
+  additions,
+  reorders,
+  onUpdate,
+  onAddChild,
+  onReorder,
+  onClose,
+}: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -21,7 +32,6 @@ export function EditPanel({ trees, overrides, additions, onUpdate, onAddChild, o
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       className="absolute inset-x-3 inset-y-3 z-30 flex flex-col overflow-hidden rounded-3xl glass-strong md:inset-x-auto md:left-1/2 md:inset-y-6 md:w-[min(92vw,640px)] md:-translate-x-1/2"
     >
-      {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4">
         <p className="text-sm font-semibold text-bone-50">Edit Content</p>
         <button
@@ -32,7 +42,6 @@ export function EditPanel({ trees, overrides, additions, onUpdate, onAddChild, o
         </button>
       </div>
 
-      {/* Scrollable node list */}
       <div className="flex-1 overflow-y-auto scrollbar-none">
         {trees.map((tree) => (
           <section key={tree.id}>
@@ -41,14 +50,19 @@ export function EditPanel({ trees, overrides, additions, onUpdate, onAddChild, o
                 {tree.label}
               </p>
             </div>
-
             <NodeTree
               node={tree.root}
               depth={0}
               overrides={overrides}
               additions={additions}
+              reorders={reorders}
               onUpdate={onUpdate}
               onAddChild={onAddChild}
+              onReorder={onReorder}
+              parentId={null}
+              siblingIds={[]}
+              index={0}
+              siblingCount={1}
             />
           </section>
         ))}
@@ -63,100 +77,170 @@ function NodeTree({
   depth,
   overrides,
   additions,
+  reorders,
   onUpdate,
   onAddChild,
+  onReorder,
+  parentId,
+  siblingIds,
+  index,
+  siblingCount,
 }: {
   node: TreeNode;
   depth: number;
   overrides: Record<string, Partial<TreeNode>>;
   additions: Record<string, TreeNode[]>;
+  reorders: Record<string, string[]>;
   onUpdate: (nodeId: string, updates: Partial<TreeNode>) => void;
   onAddChild: (parentId: string) => void;
+  onReorder: (parentId: string, orderedIds: string[]) => void;
+  parentId: string | null;
+  siblingIds: string[];
+  index: number;
+  siblingCount: number;
 }) {
   const live = applyOverride(node, overrides);
+  const originalChildren = node.children ?? [];
   const addedChildren = additions[node.id] ?? [];
-  const allChildren = [...(node.children ?? []), ...addedChildren];
+  const allChildren = [...originalChildren, ...addedChildren].map((c) => applyOverride(c, overrides));
+
+  const order = reorders[node.id];
+  const orderedChildren = order
+    ? [
+        ...order.flatMap((id) => {
+          const found = allChildren.find((c) => c.id === id);
+          return found ? [found] : [];
+        }),
+        ...allChildren.filter((c) => !order.includes(c.id)),
+      ]
+    : allChildren;
+
+  const childIds = orderedChildren.map((c) => c.id);
+
+  const swap = (a: number, b: number) => {
+    if (!parentId) return;
+    const next = [...siblingIds];
+    [next[a], next[b]] = [next[b], next[a]];
+    onReorder(parentId, next);
+  };
 
   return (
     <>
       <NodeEditor
         node={live}
         depth={depth}
+        canMoveUp={index > 0 && !!parentId}
+        canMoveDown={index < siblingCount - 1 && !!parentId}
+        onMoveUp={() => swap(index - 1, index)}
+        onMoveDown={() => swap(index, index + 1)}
         onUpdate={(updates) => onUpdate(node.id, updates)}
         onAddChild={() => onAddChild(node.id)}
       />
-      {allChildren.map((child) => (
+      {orderedChildren.map((child, i) => (
         <NodeTree
           key={child.id}
           node={child}
           depth={depth + 1}
           overrides={overrides}
           additions={additions}
+          reorders={reorders}
           onUpdate={onUpdate}
           onAddChild={onAddChild}
+          onReorder={onReorder}
+          parentId={node.id}
+          siblingIds={childIds}
+          index={i}
+          siblingCount={orderedChildren.length}
         />
       ))}
     </>
   );
 }
 
-const DEPTH_COLORS = [
-  "border-signal-400/0",
-  "border-signal-400/40",
-  "border-signal-400/25",
-  "border-bone-100/15",
+const BORDER_COLORS = [
+  "",
+  "border-l-2 border-signal-400/40",
+  "border-l-2 border-signal-400/25",
+  "border-l-2 border-bone-100/15",
 ];
 
 function NodeEditor({
   node,
   depth,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
   onUpdate,
   onAddChild,
 }: {
   node: TreeNode;
   depth: number;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
   onUpdate: (updates: Partial<TreeNode>) => void;
   onAddChild: () => void;
 }) {
-  const leftPad = 20 + depth * 18;
-  const borderColor = DEPTH_COLORS[Math.min(depth, DEPTH_COLORS.length - 1)];
+  const borderClass = BORDER_COLORS[Math.min(depth, BORDER_COLORS.length - 1)];
 
   return (
     <div
-      className={`relative border-b border-white/6 py-4 ${depth > 0 ? `border-l-2 ${borderColor}` : ""}`}
-      style={{ paddingLeft: leftPad, paddingRight: 20 }}
+      className={`border-b border-white/6 py-3.5 ${borderClass}`}
+      style={{ paddingLeft: 20 + depth * 18, paddingRight: 20 }}
     >
-      {/* Title */}
-      <input
-        value={node.title}
-        onChange={(e) => onUpdate({ title: e.target.value })}
-        placeholder="Title"
-        className="mb-1.5 w-full bg-transparent text-[15px] font-semibold text-bone-50 placeholder:text-bone-100/20 focus:outline-none"
-      />
+      {/* Title row with reorder arrows */}
+      <div className="flex items-center gap-2">
+        <input
+          value={node.title}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Title"
+          className="min-w-0 flex-1 bg-transparent text-[15px] font-semibold text-bone-50 placeholder:text-bone-100/20 focus:outline-none"
+        />
+        {(canMoveUp || canMoveDown) && (
+          <div className="flex shrink-0 flex-col">
+            <button
+              onClick={onMoveUp}
+              disabled={!canMoveUp}
+              className="p-0.5 text-bone-100/25 transition-colors hover:text-bone-100/70 disabled:opacity-0"
+            >
+              <ChevronUp size={13} />
+            </button>
+            <button
+              onClick={onMoveDown}
+              disabled={!canMoveDown}
+              className="p-0.5 text-bone-100/25 transition-colors hover:text-bone-100/70 disabled:opacity-0"
+            >
+              <ChevronDown size={13} />
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Blurb */}
       <input
         value={node.blurb ?? ""}
         onChange={(e) => onUpdate({ blurb: e.target.value })}
         placeholder="Short subtitle…"
-        className="mb-2 w-full bg-transparent text-sm text-bone-100/55 placeholder:text-bone-100/20 focus:outline-none focus:text-bone-100/80 transition-colors"
+        className="mt-1.5 w-full bg-transparent text-sm text-bone-100/55 placeholder:text-bone-100/20 focus:text-bone-100/80 focus:outline-none transition-colors"
       />
 
-      {/* Description — show when parent or already has content */}
+      {/* Description */}
       {(node.description != null || depth <= 1) && (
         <textarea
           value={node.description ?? ""}
           onChange={(e) => onUpdate({ description: e.target.value })}
           placeholder="Description…"
           rows={node.description ? 3 : 1}
-          className="mb-2 w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/50 placeholder:text-bone-100/18 focus:text-bone-100/75 focus:outline-none transition-colors"
+          className="mt-2 w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/50 placeholder:text-bone-100/18 focus:text-bone-100/75 focus:outline-none transition-colors"
         />
       )}
 
       {/* Add child */}
       <button
         onClick={onAddChild}
-        className="mt-0.5 flex items-center gap-1 text-xs text-bone-100/30 hover:text-signal-400/70 transition-colors"
+        className="mt-2 flex items-center gap-1 text-xs text-bone-100/28 transition-colors hover:text-signal-400/70"
       >
         <Plus size={11} />
         Add child

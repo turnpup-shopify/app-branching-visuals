@@ -13,6 +13,7 @@ import type { TreeDef, TreeNode } from "./types";
 
 const OV_KEY = "bv-overrides";
 const ADD_KEY = "bv-additions";
+const REORDER_KEY = "bv-reorders";
 
 function load<T>(key: string, fallback: T): T {
   try {
@@ -31,6 +32,9 @@ function App() {
   const [additions, setAdditions] = useState<Record<string, TreeNode[]>>(() =>
     load(ADD_KEY, {}),
   );
+  const [reorders, setReorders] = useState<Record<string, string[]>>(() =>
+    load(REORDER_KEY, {}),
+  );
   const explorer = useTreeExplorer(activeTree);
 
   const handleTreeChange = (tree: TreeDef) => {
@@ -43,6 +47,14 @@ function App() {
     setOverrides((prev) => {
       const next = { ...prev, [nodeId]: { ...prev[nodeId], ...updates } };
       localStorage.setItem(OV_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const handleReorder = useCallback((parentId: string, orderedIds: string[]) => {
+    setReorders((prev) => {
+      const next = { ...prev, [parentId]: orderedIds };
+      localStorage.setItem(REORDER_KEY, JSON.stringify(next));
       return next;
     });
   }, []);
@@ -61,7 +73,7 @@ function App() {
   }, []);
 
   const livePath = explorer.path.map((n) => applyOverride(n, overrides));
-  const liveNode = applyOverrides(explorer.focus, overrides, additions);
+  const liveNode = applyOverrides(explorer.focus, overrides, additions, reorders);
 
   return (
     <div className="relative flex h-dvh w-screen flex-col">
@@ -93,8 +105,10 @@ function App() {
               trees={trees}
               overrides={overrides}
               additions={additions}
+              reorders={reorders}
               onUpdate={handleUpdateNode}
               onAddChild={handleAddChild}
+              onReorder={handleReorder}
               onClose={() => setEditMode(false)}
             />
           ) : (
