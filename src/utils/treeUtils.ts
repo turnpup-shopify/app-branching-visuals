@@ -1,4 +1,4 @@
-import type { TreeDef, TreeNode } from "../types";
+import type { TreeNode } from "../types";
 
 export function applyOverride(node: TreeNode, ov: Record<string, Partial<TreeNode>>): TreeNode {
   const patch = ov[node.id];
