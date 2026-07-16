@@ -1,4 +1,4 @@
-import type { TreeNode } from "../types";
+import type { TreeDef, TreeNode } from "../types";
 
 export function applyOverride(node: TreeNode, ov: Record<string, Partial<TreeNode>>): TreeNode {
   const patch = ov[node.id];
@@ -33,4 +33,19 @@ export function applyOverrides(
   const allChildren = [...originalChildren, ...addedChildren].map((c) => applyOverride(c, ov));
   const ordered = reorderChildren(allChildren, node.id, reorders);
   return ordered.length > 0 ? { ...live, children: ordered } : live;
+}
+
+export function deepMerge(
+  node: TreeNode,
+  ov: Record<string, Partial<TreeNode>>,
+  additions: Record<string, TreeNode[]>,
+  reorders: Record<string, string[]>,
+): TreeNode {
+  const live = applyOverride(node, ov);
+  const originalChildren = live.children ?? [];
+  const addedChildren = additions[node.id] ?? [];
+  const allChildren = [...originalChildren, ...addedChildren].map((c) => applyOverride(c, ov));
+  const ordered = reorderChildren(allChildren, node.id, reorders);
+  if (ordered.length === 0) return live;
+  return { ...live, children: ordered.map((c) => deepMerge(c, ov, additions, reorders)) };
 }
