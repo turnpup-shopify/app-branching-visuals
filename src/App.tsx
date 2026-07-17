@@ -22,10 +22,19 @@ function load<T>(key: string, fallback: T): T {
   }
 }
 
+function findNode(root: TreeNode, id: string): TreeNode | null {
+  if (root.id === id) return root;
+  for (const child of root.children ?? []) {
+    const found = findNode(child, id);
+    if (found) return found;
+  }
+  return null;
+}
+
 function App() {
   const [activeTree, setActiveTree] = useState<TreeDef>(trees[0]);
   const [editMode, setEditMode] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [overrides, setOverrides] = useState<Record<string, Partial<TreeNode>>>(() =>
     load(OV_KEY, {}),
   );
@@ -39,7 +48,7 @@ function App() {
   const handleTreeChange = (tree: TreeDef) => {
     if (tree.id === activeTree.id) return;
     setActiveTree(tree);
-    setSelectedNode(null);
+    setSelectedNodeId(null);
   };
 
   const handleUpdateNode = useCallback((nodeId: string, updates: Partial<TreeNode>) => {
@@ -72,6 +81,7 @@ function App() {
   }, []);
 
   const mergedRoot = deepMerge(activeTree.root, overrides, additions, reorders);
+  const selectedNode = selectedNodeId ? findNode(mergedRoot, selectedNodeId) : null;
 
   return (
     <div className="relative flex h-dvh w-screen flex-col">
@@ -117,10 +127,14 @@ function App() {
             >
               <TreeView
                 root={mergedRoot}
-                onSelectNode={setSelectedNode}
-                selectedId={selectedNode?.id}
+                onSelectNode={(node) => setSelectedNodeId(node.id)}
+                selectedId={selectedNodeId ?? undefined}
               />
-              <NodeSheet node={selectedNode} onClose={() => setSelectedNode(null)} />
+              <NodeSheet
+                node={selectedNode}
+                onUpdate={(updates) => selectedNodeId && handleUpdateNode(selectedNodeId, updates)}
+                onClose={() => setSelectedNodeId(null)}
+              />
             </motion.div>
           )}
         </AnimatePresence>
