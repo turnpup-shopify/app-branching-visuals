@@ -35,7 +35,8 @@ function TopBranch({
   selectedId?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const hasChildren = (node.children?.length ?? 0) > 0;
+  const visibleChildren = (node.children ?? []).filter((c) => !c.hidden);
+  const hasChildren = visibleChildren.length > 0;
   const hasContent = !!(node.description || node.links?.length);
   const isSelected = node.id === selectedId;
 
@@ -72,11 +73,11 @@ function TopBranch({
 
       {hasChildren && open && (
         <div className="flex flex-col border-t border-white/[0.06] px-3 py-2">
-          {node.children!.map((child, i) => (
+          {visibleChildren.map((child, i) => (
             <SubBranch
               key={child.id}
               node={child}
-              isLast={i === node.children!.length - 1}
+              isLast={i === visibleChildren.length - 1}
               depth={1}
               onSelect={onSelect}
               selectedId={selectedId}
@@ -102,7 +103,8 @@ function SubBranch({
   selectedId?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const hasChildren = (node.children?.length ?? 0) > 0;
+  const visibleChildren = (node.children ?? []).filter((c) => !c.hidden);
+  const hasChildren = visibleChildren.length > 0;
   const hasContent = !!(node.description || node.links?.length);
   const isSelected = node.id === selectedId;
 
@@ -139,11 +141,11 @@ function SubBranch({
 
       {hasChildren && open && (
         <div className="flex flex-col">
-          {node.children!.map((child, i) => (
+          {visibleChildren.map((child, i) => (
             <SubBranch
               key={child.id}
               node={child}
-              isLast={i === node.children!.length - 1}
+              isLast={i === visibleChildren.length - 1}
               depth={depth + 1}
               onSelect={onSelect}
               selectedId={selectedId}

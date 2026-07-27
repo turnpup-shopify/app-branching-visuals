@@ -16,6 +16,7 @@ export interface TreeNode {
   image?: string;
   accent?: NodeAccent;
   children?: TreeNode[];
+  hidden?: boolean;
 }
 
 export interface TreeDef {

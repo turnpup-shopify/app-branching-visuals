@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Pencil, Check, X } from "lucide-react";
+import { ArrowUpRight, Pencil, Check, Trash2, X } from "lucide-react";
 import type { TreeNode } from "../types";
 
 interface Props {
@@ -95,13 +95,23 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
             {/* Content */}
             <div className="flex-1 overflow-y-auto scrollbar-none px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
               {editing ? (
-                <textarea
-                  value={node.description ?? ""}
-                  onChange={(e) => onUpdate?.({ description: e.target.value })}
-                  placeholder="Description…"
-                  rows={5}
-                  className="w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/75 placeholder:text-bone-100/25 focus:outline-none"
-                />
+                <>
+                  <textarea
+                    value={node.description ?? ""}
+                    onChange={(e) => onUpdate?.({ description: e.target.value })}
+                    placeholder="Description…"
+                    rows={5}
+                    className="w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/75 placeholder:text-bone-100/25 focus:outline-none"
+                  />
+                  <button
+                    onClick={() => { onUpdate?.({ hidden: true }); onClose(); }}
+                    className="mt-4 flex items-center gap-1.5 text-xs text-red-400/60 transition-colors hover:text-red-400"
+                  >
+                    <Trash2 size={12} />
+                    Delete node
+                  </button>
+                </>
+
               ) : (
                 <>
                   {node.description && (
