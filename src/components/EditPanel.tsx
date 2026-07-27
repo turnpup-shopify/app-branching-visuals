@@ -37,6 +37,13 @@ export function EditPanel({
     setTimeout(() => setSyncLabel("idle"), 3000);
   };
 
+  const handleReset = () => {
+    ["bv-overrides", "bv-additions", "bv-reorders"].forEach((k) =>
+      localStorage.removeItem(k),
+    );
+    window.location.reload();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -48,6 +55,12 @@ export function EditPanel({
       <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4">
         <p className="text-sm font-semibold text-bone-50">Edit Content</p>
         <div className="flex items-center gap-2">
+          <button
+            onClick={handleReset}
+            className="rounded-full bg-bone-100/8 px-3 py-1.5 text-xs font-medium text-bone-100/40 hover:text-red-400/70 transition-colors"
+          >
+            Reset
+          </button>
           <button
             onClick={handleSync}
             className="rounded-full bg-bone-100/10 px-3 py-1.5 text-xs font-medium text-bone-100/60 hover:bg-bone-100/15 hover:text-bone-100/90 transition-colors"

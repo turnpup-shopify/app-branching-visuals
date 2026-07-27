@@ -12,12 +12,12 @@ export const loveListTree: TreeDef = {
     children: [
       {
         id: "love-making",
-        title: "Making Things",
-        blurb: "Creating with hands and mind",
+        title: "Experiencss ",
+        blurb: "🌊⚡️",
         accent: "ink",
         children: [
-          { id: "love-m-1", title: "Designing" },
-          { id: "love-m-2", title: "Building" },
+          { id: "love-m-1", title: "Ocean Sunset" },
+          { id: "love-m-2", title: "Thunder storms " },
           { id: "love-m-3", title: "Prototyping" },
           { id: "love-m-4", title: "Woodworking" },
         ],

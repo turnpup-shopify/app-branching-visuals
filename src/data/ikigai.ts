@@ -11,6 +11,16 @@ export const ikigaiTree: TreeDef = {
     accent: "signal",
     children: [
       {
+        id: "node-1785122534158",
+        title: "❤️ What I Want",
+        accent: "ink",
+        children: [
+          { id: "node-1785122583830", title: "Smarter Thinker", accent: "ink" },
+          { id: "node-1785122614582", title: "More Creative", accent: "ink" },
+          { id: "node-1785122624321", title: "Better Community", accent: "ink" },
+        ],
+      },
+      {
         id: "north-stars",
         title: "🧭 My North Stars",
         blurb: "A life that awes, sparks thought, & slows",
