@@ -5,7 +5,7 @@
   "root": {
     "id": "ikigai-root",
     "title": "Ikigai",
-    "blurb": "Five lenses, one direction",
+    "blurb": "",
     "accent": "signal",
     "children": [
       {
@@ -13,9 +13,21 @@
         "title": "❤️ What I Want",
         "accent": "ink",
         "children": [
-          { "id": "node-1785122583830", "title": "Smarter Thinker", "accent": "ink" },
-          { "id": "node-1785122614582", "title": "More Creative", "accent": "ink" },
-          { "id": "node-1785122624321", "title": "Better Community", "accent": "ink" }
+          {
+            "id": "node-1785122583830",
+            "title": "Smarter Thinker",
+            "accent": "ink"
+          },
+          {
+            "id": "node-1785122614582",
+            "title": "More Creative",
+            "accent": "ink"
+          },
+          {
+            "id": "node-1785122624321",
+            "title": "Better Community",
+            "accent": "ink"
+          }
         ]
       },
       {
@@ -30,12 +42,30 @@
             "blurb": "Physical forms that slow and inspire",
             "accent": "ink",
             "children": [
-              { "id": "ns-p-1", "title": "Shelves" },
-              { "id": "ns-p-2", "title": "Hooks" },
-              { "id": "ns-p-3", "title": "Stools" },
-              { "id": "ns-p-4", "title": "Small tables" },
-              { "id": "ns-p-5", "title": "Stackable" },
-              { "id": "ns-p-6", "title": "Modular" }
+              {
+                "id": "ns-p-1",
+                "title": "Shelves"
+              },
+              {
+                "id": "ns-p-2",
+                "title": "Hooks"
+              },
+              {
+                "id": "ns-p-3",
+                "title": "Stools"
+              },
+              {
+                "id": "ns-p-4",
+                "title": "Small tables"
+              },
+              {
+                "id": "ns-p-5",
+                "title": "Stackable"
+              },
+              {
+                "id": "ns-p-6",
+                "title": "Modular"
+              }
             ]
           },
           {
@@ -44,8 +74,14 @@
             "blurb": "Digital surfaces that open a world",
             "accent": "ink",
             "children": [
-              { "id": "ns-po-1", "title": "Galleries" },
-              { "id": "ns-po-2", "title": "Marketing" }
+              {
+                "id": "ns-po-1",
+                "title": "Galleries"
+              },
+              {
+                "id": "ns-po-2",
+                "title": "Marketing"
+              }
             ]
           },
           {
@@ -54,10 +90,22 @@
             "blurb": "The human and systemic layer",
             "accent": "ink",
             "children": [
-              { "id": "ns-i-1", "title": "Small systems" },
-              { "id": "ns-i-2", "title": "Meetings" },
-              { "id": "ns-i-3", "title": "Processes" },
-              { "id": "ns-i-4", "title": "Questions" }
+              {
+                "id": "ns-i-1",
+                "title": "Small systems"
+              },
+              {
+                "id": "ns-i-2",
+                "title": "Meetings"
+              },
+              {
+                "id": "ns-i-3",
+                "title": "Processes"
+              },
+              {
+                "id": "ns-i-4",
+                "title": "Questions"
+              }
             ]
           }
         ]
@@ -94,9 +142,18 @@
         "blurb": "What anchors you",
         "accent": "ink",
         "children": [
-          { "id": "value-1", "title": "Gratitude" },
-          { "id": "value-2", "title": "Freedom" },
-          { "id": "value-3", "title": "Creativity" }
+          {
+            "id": "value-1",
+            "title": "Gratitude"
+          },
+          {
+            "id": "value-2",
+            "title": "Freedom"
+          },
+          {
+            "id": "value-3",
+            "title": "Creativity"
+          }
         ]
       },
       {
@@ -105,11 +162,26 @@
         "blurb": "What lights you up",
         "accent": "ink",
         "children": [
-          { "id": "love-1", "title": "Immersive installations (water / light / sound)" },
-          { "id": "love-2", "title": "Seeing others smile, laugh, make memories" },
-          { "id": "love-3", "title": "Tiny houses — making do with less" },
-          { "id": "love-4", "title": "Public installations that make you think and feel awe" },
-          { "id": "love-5", "title": "Dune / spy shows" }
+          {
+            "id": "love-1",
+            "title": "Immersive installations (water / light / sound)"
+          },
+          {
+            "id": "love-2",
+            "title": "Seeing others smile, laugh, make memories"
+          },
+          {
+            "id": "love-3",
+            "title": "Tiny houses — making do with less"
+          },
+          {
+            "id": "love-4",
+            "title": "Public installations that make you think and feel awe"
+          },
+          {
+            "id": "love-5",
+            "title": "Dune / spy shows"
+          }
         ]
       },
       {
