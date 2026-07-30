@@ -15,6 +15,57 @@ interface Props {
   onClose: () => void;
 }
 
+const OWNER = "turnpup-shopify";
+const REPO = "app-branching-visuals";
+const BRANCH = "claude/ikigai-vision-tree-explorer-vfuwso";
+const FILE_PATHS: Record<string, string> = {
+  ikigai: "src/data/ikigai.json",
+  vision: "src/data/visionLayers.json",
+  "love-list": "src/data/loveList.json",
+};
+const TOKEN_KEY = "bv-gh-token";
+
+type SyncState = "idle" | "needs-token" | "syncing" | "done" | "error";
+
+async function pushToGitHub(
+  token: string,
+  trees: TreeDef[],
+  overrides: Record<string, Partial<TreeNode>>,
+  additions: Record<string, TreeNode[]>,
+  reorders: Record<string, string[]>,
+) {
+  for (const tree of trees) {
+    const path = FILE_PATHS[tree.id];
+    if (!path) continue;
+    const merged = { ...tree, root: deepMerge(tree.root, overrides, additions, reorders) };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
+    };
+    const meta = await fetch(
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
+      { headers },
+    ).then((r) => r.json() as Promise<{ sha: string }>);
+    const body = JSON.stringify(merged, null, 2);
+    const content = btoa(unescape(encodeURIComponent(body)));
+    const res = await fetch(
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,
+      {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          message: "Sync content from in-app editor",
+          content,
+          sha: meta.sha,
+          branch: BRANCH,
+        }),
+      },
+    );
+    if (!res.ok) throw new Error(`${res.status} on ${path}`);
+  }
+}
+
 export function EditPanel({
   trees,
   overrides,
@@ -25,16 +76,40 @@ export function EditPanel({
   onReorder,
   onClose,
 }: Props) {
-  const [syncLabel, setSyncLabel] = useState<"idle" | "copied">("idle");
+  const [syncState, setSyncState] = useState<SyncState>("idle");
+  const [tokenInput, setTokenInput] = useState("");
 
-  const handleSync = async () => {
-    const merged = trees.map((tree) => ({
-      ...tree,
-      root: deepMerge(tree.root, overrides, additions, reorders),
-    }));
-    await navigator.clipboard.writeText(JSON.stringify(merged, null, 2));
-    setSyncLabel("copied");
-    setTimeout(() => setSyncLabel("idle"), 3000);
+  const handleSyncClick = () => {
+    const saved = localStorage.getItem(TOKEN_KEY);
+    if (saved) {
+      runSync(saved);
+    } else {
+      setSyncState("needs-token");
+    }
+  };
+
+  const handleTokenSubmit = () => {
+    const t = tokenInput.trim();
+    if (!t) return;
+    localStorage.setItem(TOKEN_KEY, t);
+    setTokenInput("");
+    runSync(t);
+  };
+
+  const runSync = (token: string) => {
+    setSyncState("syncing");
+    pushToGitHub(token, trees, overrides, additions, reorders)
+      .then(() => {
+        setSyncState("done");
+        ["bv-overrides", "bv-additions", "bv-reorders"].forEach((k) =>
+          localStorage.removeItem(k),
+        );
+        setTimeout(() => setSyncState("idle"), 4000);
+      })
+      .catch(() => {
+        setSyncState("error");
+        setTimeout(() => setSyncState("idle"), 4000);
+      });
   };
 
   const handleReset = () => {
@@ -44,6 +119,15 @@ export function EditPanel({
     window.location.reload();
   };
 
+  const syncLabel =
+    syncState === "syncing"
+      ? "Syncing…"
+      : syncState === "done"
+        ? "Synced ✓ — deploys in ~2 min"
+        : syncState === "error"
+          ? "Error — try again"
+          : "Sync to source";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -52,28 +136,57 @@ export function EditPanel({
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       className="absolute inset-x-3 inset-y-3 z-30 flex flex-col overflow-hidden rounded-3xl glass-strong md:inset-x-auto md:left-1/2 md:inset-y-6 md:w-[min(92vw,640px)] md:-translate-x-1/2"
     >
-      <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4">
-        <p className="text-sm font-semibold text-bone-50">Edit Content</p>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleReset}
-            className="rounded-full bg-bone-100/8 px-3 py-1.5 text-xs font-medium text-bone-100/40 hover:text-red-400/70 transition-colors"
-          >
-            Reset
-          </button>
-          <button
-            onClick={handleSync}
-            className="rounded-full bg-bone-100/10 px-3 py-1.5 text-xs font-medium text-bone-100/60 hover:bg-bone-100/15 hover:text-bone-100/90 transition-colors"
-          >
-            {syncLabel === "copied" ? "Copied! Paste in chat →" : "Sync to source"}
-          </button>
-          <button
-            onClick={onClose}
-            className="rounded-full bg-signal-500/30 px-3 py-1.5 text-xs font-medium text-signal-300"
-          >
-            Done
-          </button>
+      <div className="flex shrink-0 flex-col border-b border-white/10 px-5 py-4 gap-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-bone-50">Edit Content</p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleReset}
+              className="rounded-full bg-bone-100/8 px-3 py-1.5 text-xs font-medium text-bone-100/40 hover:text-red-400/70 transition-colors"
+            >
+              Reset
+            </button>
+            <button
+              onClick={handleSyncClick}
+              disabled={syncState === "syncing"}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-60 ${
+                syncState === "done"
+                  ? "bg-signal-500/20 text-signal-300"
+                  : syncState === "error"
+                    ? "bg-red-500/20 text-red-300"
+                    : "bg-bone-100/10 text-bone-100/60 hover:bg-bone-100/15 hover:text-bone-100/90"
+              }`}
+            >
+              {syncLabel}
+            </button>
+            <button
+              onClick={onClose}
+              className="rounded-full bg-signal-500/30 px-3 py-1.5 text-xs font-medium text-signal-300"
+            >
+              Done
+            </button>
+          </div>
         </div>
+
+        {syncState === "needs-token" && (
+          <div className="flex items-center gap-2">
+            <input
+              value={tokenInput}
+              onChange={(e) => setTokenInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleTokenSubmit()}
+              placeholder="GitHub token (repo scope)…"
+              type="password"
+              autoFocus
+              className="min-w-0 flex-1 rounded-xl bg-white/8 px-3 py-2 text-xs text-bone-50 placeholder:text-bone-100/30 focus:outline-none focus:ring-1 focus:ring-signal-400/40"
+            />
+            <button
+              onClick={handleTokenSubmit}
+              className="shrink-0 rounded-xl bg-signal-500/30 px-3 py-2 text-xs font-medium text-signal-300"
+            >
+              Save & Sync
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-none">
