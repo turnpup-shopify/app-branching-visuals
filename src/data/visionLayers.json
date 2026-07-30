@@ -50,12 +50,30 @@
         "blurb": "The checks",
         "accent": "ink",
         "children": [
-          { "id": "filter-1", "title": "Does this add a layer or just noise?" },
-          { "id": "filter-2", "title": "Does it point me in my direction?" },
-          { "id": "filter-3", "title": "Does it ladder up — week to month to year?" },
-          { "id": "filter-4", "title": "Would I linger here?" },
-          { "id": "filter-5", "title": "Collected or installed — earned beats bought." },
-          { "id": "filter-6", "title": "Toward myself, or away from the hard thing?" }
+          {
+            "id": "filter-1",
+            "title": "Does this add a layer or just noise?"
+          },
+          {
+            "id": "filter-2",
+            "title": "Does it point me in my direction?"
+          },
+          {
+            "id": "filter-3",
+            "title": "Does it ladder up — week to month to year?"
+          },
+          {
+            "id": "filter-4",
+            "title": "Would I linger here?"
+          },
+          {
+            "id": "filter-5",
+            "title": "Collected or installed — earned beats bought."
+          },
+          {
+            "id": "filter-6",
+            "title": "Toward myself, or away from the hard thing?"
+          }
         ]
       },
       {
@@ -64,10 +82,22 @@
         "blurb": "What I won't do",
         "accent": "ink",
         "children": [
-          { "id": "refuse-1", "title": "Trend chasing" },
-          { "id": "refuse-2", "title": "Binge and quit" },
-          { "id": "refuse-3", "title": "Comparison" },
-          { "id": "refuse-4", "title": "Drift" }
+          {
+            "id": "refuse-1",
+            "title": "Trend chasing"
+          },
+          {
+            "id": "refuse-2",
+            "title": "Binge and quit"
+          },
+          {
+            "id": "refuse-3",
+            "title": "Comparison"
+          },
+          {
+            "id": "refuse-4",
+            "title": "Drift"
+          }
         ]
       },
       {
