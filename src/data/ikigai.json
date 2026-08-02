@@ -31,6 +31,45 @@
         ]
       },
       {
+        "id": "start-more",
+        "title": "💊 Anti-Dopamine",
+        "blurb": "20-sec-friction + outlast boredom",
+        "description": "",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "node-1785628142685",
+            "title": "Engage from micro curiosity",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "node-1785628561434",
+                "title": "",
+                "accent": "ink",
+                "hidden": true
+              }
+            ]
+          },
+          {
+            "id": "node-1785628611160",
+            "title": "Paper & Pen Time",
+            "accent": "ink"
+          },
+          {
+            "id": "node-1785628917848",
+            "title": "Deep Dive 1 Niche Expert - Learn Names",
+            "accent": "ink",
+            "blurb": "Make it small niche so you can do in a day "
+          },
+          {
+            "id": "node-1785628967091",
+            "title": "Ask a question about something you can’t answer ",
+            "accent": "ink",
+            "blurb": "what does that building have different colored brick on 3rd floor? "
+          }
+        ]
+      },
+      {
         "id": "north-stars",
         "title": "🧭 My North Stars",
         "blurb": "A life that awes, sparks thought, & slows",
@@ -125,8 +164,8 @@
           {
             "id": "strength-2",
             "title": "Intentional Pattern Finder",
-            "blurb": "Why, why, why",
-            "description": "You don't stop at what's happening — you keep asking why until you reach the thing underneath. That habit turns surface observations into durable insight. A signal in one category becomes a principle that applies three categories over. Most people collect data points; you build a model. The model is the asset, and it compounds."
+            "blurb": "Why, compiling, 2nd & 3rd",
+            "description": "You don't stop at what's happening — you keep asking why until you reach the thing underneath. That habit turns surface observations into  durable insight. A signal in one category becomes a principle that applies three categories over. Most people collect data points; you build a model. The model is the asset, and it compounds."
           },
           {
             "id": "strength-3",
@@ -183,13 +222,6 @@
             "title": "Dune / spy shows"
           }
         ]
-      },
-      {
-        "id": "start-more",
-        "title": "✨ Start More",
-        "blurb": "Stay in the present",
-        "description": "Not all about achievement.\n\nIt's about creating more awe, inspiring thought, and intentionality.",
-        "accent": "ink"
       },
       {
         "id": "accomplishments",
