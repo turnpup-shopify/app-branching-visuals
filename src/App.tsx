@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Pencil, PencilOff } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import { Pencil, PencilOff, UploadCloud } from "lucide-react";
 import { Background } from "./components/Background";
 import { TreeToggle } from "./components/TreeToggle";
 import { TreeView } from "./components/TreeView";
@@ -34,6 +34,7 @@ function findNode(root: TreeNode, id: string): TreeNode | null {
 function App() {
   const [activeTree, setActiveTree] = useState<TreeDef>(trees[0]);
   const [editMode, setEditMode] = useState(false);
+  const [syncOpen, setSyncOpen] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [overrides, setOverrides] = useState<Record<string, Partial<TreeNode>>>(() =>
     load(OV_KEY, {}),
@@ -80,6 +81,11 @@ function App() {
     });
   }, []);
 
+  const handleDeleteNode = useCallback((nodeId: string) => {
+    handleUpdateNode(nodeId, { hidden: true });
+    setSelectedNodeId((prev) => (prev === nodeId ? null : prev));
+  }, [handleUpdateNode]);
+
   const mergedRoot = deepMerge(activeTree.root, overrides, additions, reorders);
   const selectedNode = selectedNodeId ? findNode(mergedRoot, selectedNodeId) : null;
 
@@ -89,22 +95,53 @@ function App() {
 
       <header className="z-20 flex w-full shrink-0 items-center gap-2 px-3 pb-1.5 pt-3">
         <TreeToggle trees={trees} activeId={activeTree.id} onChange={handleTreeChange} />
-        <button
-          onClick={() => setEditMode((e) => !e)}
-          className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs backdrop-blur-md transition-colors ${
-            editMode
-              ? "bg-signal-500/30 text-signal-300"
-              : "bg-ink-900/30 text-bone-100/40 hover:text-bone-100/70"
-          }`}
-        >
-          {editMode ? <PencilOff size={12} /> : <Pencil size={12} />}
-          {editMode ? "Done" : "Edit"}
-        </button>
+        {editMode ? (
+          <>
+            <button
+              onClick={() => setSyncOpen(true)}
+              className="flex items-center gap-1 rounded-full bg-ink-900/30 px-2.5 py-1 text-xs text-bone-100/40 backdrop-blur-md transition-colors hover:text-bone-100/70"
+            >
+              <UploadCloud size={12} />
+              Sync
+            </button>
+            <button
+              onClick={() => setEditMode(false)}
+              className="flex items-center gap-1 rounded-full bg-signal-500/30 px-2.5 py-1 text-xs text-signal-300 backdrop-blur-md"
+            >
+              <PencilOff size={12} />
+              Done
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => setEditMode(true)}
+            className="flex items-center gap-1 rounded-full bg-ink-900/30 px-2.5 py-1 text-xs text-bone-100/40 backdrop-blur-md transition-colors hover:text-bone-100/70"
+          >
+            <Pencil size={12} />
+            Edit
+          </button>
+        )}
       </header>
 
       <main className="relative min-h-0 w-full flex-1">
-        <AnimatePresence mode="wait">
-          {editMode ? (
+        <TreeView
+          root={mergedRoot}
+          onSelectNode={(node) => setSelectedNodeId(node.id)}
+          selectedId={selectedNodeId ?? undefined}
+          editMode={editMode}
+          onDeleteNode={handleDeleteNode}
+          onAddSibling={(parentId) => handleAddChild(parentId)}
+        />
+        {!editMode && (
+          <NodeSheet
+            node={selectedNode}
+            onUpdate={(updates) => selectedNodeId && handleUpdateNode(selectedNodeId, updates)}
+            onClose={() => setSelectedNodeId(null)}
+          />
+        )}
+
+        <AnimatePresence>
+          {syncOpen && (
             <EditPanel
               key="edit"
               trees={trees}
@@ -114,28 +151,8 @@ function App() {
               onUpdate={handleUpdateNode}
               onAddChild={handleAddChild}
               onReorder={handleReorder}
-              onClose={() => setEditMode(false)}
+              onClose={() => setSyncOpen(false)}
             />
-          ) : (
-            <motion.div
-              key="tree"
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-            >
-              <TreeView
-                root={mergedRoot}
-                onSelectNode={(node) => setSelectedNodeId(node.id)}
-                selectedId={selectedNodeId ?? undefined}
-              />
-              <NodeSheet
-                node={selectedNode}
-                onUpdate={(updates) => selectedNodeId && handleUpdateNode(selectedNodeId, updates)}
-                onClose={() => setSelectedNodeId(null)}
-              />
-            </motion.div>
           )}
         </AnimatePresence>
       </main>

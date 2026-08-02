@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Minus, Plus } from "lucide-react";
 import type { TreeNode } from "../types";
 
 interface Props {
   root: TreeNode;
   onSelectNode: (node: TreeNode) => void;
   selectedId?: string;
+  editMode?: boolean;
+  onDeleteNode?: (id: string) => void;
+  onAddSibling?: (parentId: string) => void;
 }
 
-export function TreeView({ root, onSelectNode, selectedId }: Props) {
+export function TreeView({ root, onSelectNode, selectedId, editMode, onDeleteNode, onAddSibling }: Props) {
+  const visibleTopChildren = (root.children ?? []).filter((c) => !c.hidden);
+
   return (
     <div className="h-full overflow-y-auto scrollbar-none">
       <div className="flex flex-col gap-1.5 px-3 pt-2 pb-10 md:mx-auto md:w-[min(92vw,640px)]">
@@ -17,8 +22,17 @@ export function TreeView({ root, onSelectNode, selectedId }: Props) {
           {root.blurb && <p className="mt-0.5 text-xs font-medium text-signal-400">{root.blurb}</p>}
         </div>
 
-        {(root.children ?? []).map((child) => (
-          <TopBranch key={child.id} node={child} onSelect={onSelectNode} selectedId={selectedId} />
+        {visibleTopChildren.map((child) => (
+          <TopBranch
+            key={child.id}
+            node={child}
+            onSelect={onSelectNode}
+            selectedId={selectedId}
+            parentId={root.id}
+            editMode={editMode}
+            onDeleteNode={onDeleteNode}
+            onAddSibling={onAddSibling}
+          />
         ))}
       </div>
     </div>
@@ -29,10 +43,18 @@ function TopBranch({
   node,
   onSelect,
   selectedId,
+  parentId,
+  editMode,
+  onDeleteNode,
+  onAddSibling,
 }: {
   node: TreeNode;
   onSelect: (n: TreeNode) => void;
   selectedId?: string;
+  parentId: string;
+  editMode?: boolean;
+  onDeleteNode?: (id: string) => void;
+  onAddSibling?: (parentId: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const visibleChildren = (node.children ?? []).filter((c) => !c.hidden);
@@ -57,6 +79,24 @@ function TopBranch({
             <span className="mt-0.5 block text-xs leading-snug text-bone-100/50">{node.blurb}</span>
           )}
         </button>
+        {editMode && (
+          <div className="flex shrink-0 items-center gap-1 pr-2">
+            <button
+              onClick={(e) => { e.stopPropagation(); onDeleteNode?.(node.id); }}
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15 text-red-400/70 transition-colors hover:bg-red-500/25 hover:text-red-400"
+              aria-label="Delete node"
+            >
+              <Minus size={11} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onAddSibling?.(parentId); }}
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-signal-500/15 text-signal-400/70 transition-colors hover:bg-signal-500/25 hover:text-signal-400"
+              aria-label="Add sibling"
+            >
+              <Plus size={11} />
+            </button>
+          </div>
+        )}
         {hasChildren && (
           <button
             onClick={() => setOpen((o) => !o)}
@@ -81,6 +121,10 @@ function TopBranch({
               depth={1}
               onSelect={onSelect}
               selectedId={selectedId}
+              parentId={node.id}
+              editMode={editMode}
+              onDeleteNode={onDeleteNode}
+              onAddSibling={onAddSibling}
             />
           ))}
         </div>
@@ -95,12 +139,20 @@ function SubBranch({
   depth,
   onSelect,
   selectedId,
+  parentId,
+  editMode,
+  onDeleteNode,
+  onAddSibling,
 }: {
   node: TreeNode;
   isLast: boolean;
   depth: number;
   onSelect: (n: TreeNode) => void;
   selectedId?: string;
+  parentId: string;
+  editMode?: boolean;
+  onDeleteNode?: (id: string) => void;
+  onAddSibling?: (parentId: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const visibleChildren = (node.children ?? []).filter((c) => !c.hidden);
@@ -126,6 +178,24 @@ function SubBranch({
             <span className="mt-0.5 block text-xs leading-snug text-bone-100/45">{node.blurb}</span>
           )}
         </button>
+        {editMode && (
+          <div className="flex shrink-0 items-center gap-1 pr-1">
+            <button
+              onClick={(e) => { e.stopPropagation(); onDeleteNode?.(node.id); }}
+              className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500/15 text-red-400/70 transition-colors hover:bg-red-500/25 hover:text-red-400"
+              aria-label="Delete node"
+            >
+              <Minus size={9} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onAddSibling?.(parentId); }}
+              className="flex h-5 w-5 items-center justify-center rounded-full bg-signal-500/15 text-signal-400/70 transition-colors hover:bg-signal-500/25 hover:text-signal-400"
+              aria-label="Add sibling"
+            >
+              <Plus size={9} />
+            </button>
+          </div>
+        )}
         {hasChildren && (
           <button
             onClick={() => setOpen((o) => !o)}
@@ -149,6 +219,10 @@ function SubBranch({
               depth={depth + 1}
               onSelect={onSelect}
               selectedId={selectedId}
+              parentId={node.id}
+              editMode={editMode}
+              onDeleteNode={onDeleteNode}
+              onAddSibling={onAddSibling}
             />
           ))}
         </div>
