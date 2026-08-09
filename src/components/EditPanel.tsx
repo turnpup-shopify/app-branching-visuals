@@ -101,7 +101,10 @@ export function EditPanel({
     pushToGitHub(token, trees, overrides, additions, reorders)
       .then(() => {
         setSyncState("done");
-        ["bv-overrides", "bv-additions", "bv-reorders"].forEach((k) =>
+        // Keep bv-reorders: the new JSON has the order baked in after sync,
+        // but the deploy takes ~2 min. Leaving reorders in localStorage ensures
+        // the order stays correct in any new tab/reload during that window.
+        ["bv-overrides", "bv-additions"].forEach((k) =>
           localStorage.removeItem(k),
         );
         setTimeout(() => setSyncState("idle"), 4000);
