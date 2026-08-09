@@ -31,11 +31,30 @@ function findNode(root: TreeNode, id: string): TreeNode | null {
   return null;
 }
 
+// Returns the parent ID and visible sibling order for a given node ID.
+// Uses the already-merged tree so the order reflects current reorders.
+function findNodeContext(
+  root: TreeNode,
+  id: string,
+): { parentId: string; siblings: string[]; index: number } | null {
+  const visibleKids = (root.children ?? []).filter((c) => !c.hidden);
+  const idx = visibleKids.findIndex((c) => c.id === id);
+  if (idx !== -1) {
+    return { parentId: root.id, siblings: visibleKids.map((c) => c.id), index: idx };
+  }
+  for (const child of root.children ?? []) {
+    const found = findNodeContext(child, id);
+    if (found) return found;
+  }
+  return null;
+}
+
 function App() {
   const [activeTree, setActiveTree] = useState<TreeDef>(trees[0]);
   const [editMode, setEditMode] = useState(false);
   const [syncOpen, setSyncOpen] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [pendingEditId, setPendingEditId] = useState<string | null>(null);
   const [overrides, setOverrides] = useState<Record<string, Partial<TreeNode>>>(() =>
     load(OV_KEY, {}),
   );
@@ -50,6 +69,7 @@ function App() {
     if (tree.id === activeTree.id) return;
     setActiveTree(tree);
     setSelectedNodeId(null);
+    setPendingEditId(null);
   };
 
   const handleUpdateNode = useCallback((nodeId: string, updates: Partial<TreeNode>) => {
@@ -69,25 +89,51 @@ function App() {
   }, []);
 
   const handleAddChild = useCallback((parentId: string) => {
-    const newNode: TreeNode = {
-      id: `node-${Date.now()}`,
-      title: "",
-      accent: "ink",
-    };
+    const newId = `node-${Date.now()}`;
+    const newNode: TreeNode = { id: newId, title: "", accent: "ink" };
     setAdditions((prev) => {
       const next = { ...prev, [parentId]: [...(prev[parentId] ?? []), newNode] };
       localStorage.setItem(ADD_KEY, JSON.stringify(next));
       return next;
     });
+    setSelectedNodeId(newId);
+    setPendingEditId(newId);
   }, []);
 
-  const handleDeleteNode = useCallback((nodeId: string) => {
-    handleUpdateNode(nodeId, { hidden: true });
-    setSelectedNodeId((prev) => (prev === nodeId ? null : prev));
-  }, [handleUpdateNode]);
+  const handleDeleteNode = useCallback(
+    (nodeId: string) => {
+      handleUpdateNode(nodeId, { hidden: true });
+      setSelectedNodeId((prev) => (prev === nodeId ? null : prev));
+    },
+    [handleUpdateNode],
+  );
 
   const mergedRoot = deepMerge(activeTree.root, overrides, additions, reorders);
   const selectedNode = selectedNodeId ? findNode(mergedRoot, selectedNodeId) : null;
+  const selectedContext = selectedNodeId ? findNodeContext(mergedRoot, selectedNodeId) : null;
+
+  const canMoveUp = (selectedContext?.index ?? 0) > 0;
+  const canMoveDown = selectedContext
+    ? selectedContext.index < selectedContext.siblings.length - 1
+    : false;
+
+  const handleMoveUp = () => {
+    if (!selectedContext) return;
+    const { parentId, siblings, index } = selectedContext;
+    const next = [...siblings];
+    [next[index - 1], next[index]] = [next[index], next[index - 1]];
+    handleReorder(parentId, next);
+  };
+
+  const handleMoveDown = () => {
+    if (!selectedContext) return;
+    const { parentId, siblings, index } = selectedContext;
+    const next = [...siblings];
+    [next[index], next[index + 1]] = [next[index + 1], next[index]];
+    handleReorder(parentId, next);
+  };
+
+  const forceEdit = editMode || selectedNodeId === pendingEditId;
 
   return (
     <div className="relative flex h-dvh w-screen flex-col">
@@ -126,27 +172,36 @@ function App() {
       <main className="relative min-h-0 w-full flex-1 overflow-hidden">
         <div
           className={`h-full transition-[padding] duration-300 ease-out ${
-            selectedNode && !editMode ? "md:pr-80" : ""
+            selectedNode ? "md:pr-80" : ""
           }`}
         >
           <TreeView
             root={mergedRoot}
-            onSelectNode={(node) =>
-              setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
-            }
+            onSelectNode={(node) => {
+              setSelectedNodeId((prev) => (prev === node.id ? null : node.id));
+              setPendingEditId(null);
+            }}
             selectedId={selectedNodeId ?? undefined}
             editMode={editMode}
             onDeleteNode={handleDeleteNode}
             onAddSibling={(parentId) => handleAddChild(parentId)}
           />
         </div>
-        {!editMode && (
-          <NodeSheet
-            node={selectedNode}
-            onUpdate={(updates) => selectedNodeId && handleUpdateNode(selectedNodeId, updates)}
-            onClose={() => setSelectedNodeId(null)}
-          />
-        )}
+
+        <NodeSheet
+          node={selectedNode}
+          forceEdit={forceEdit}
+          onUpdate={(updates) => selectedNodeId && handleUpdateNode(selectedNodeId, updates)}
+          onClose={() => {
+            setSelectedNodeId(null);
+            setPendingEditId(null);
+          }}
+          onAddChild={selectedNodeId ? () => handleAddChild(selectedNodeId) : undefined}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
+        />
 
         <AnimatePresence>
           {syncOpen && (

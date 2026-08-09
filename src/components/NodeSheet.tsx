@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Pencil, Check, Trash2, X } from "lucide-react";
+import { ArrowUpRight, Pencil, Check, Trash2, X, ChevronUp, ChevronDown, Plus } from "lucide-react";
 import type { TreeNode } from "../types";
 
 function useIsDesktop() {
@@ -20,15 +20,31 @@ interface Props {
   node: TreeNode | null;
   onClose: () => void;
   onUpdate?: (updates: Partial<TreeNode>) => void;
+  forceEdit?: boolean;
+  onAddChild?: () => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
 }
 
-export function NodeSheet({ node, onClose, onUpdate }: Props) {
-  const [editing, setEditing] = useState(false);
+export function NodeSheet({
+  node,
+  onClose,
+  onUpdate,
+  forceEdit,
+  onAddChild,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
+}: Props) {
+  const [editing, setEditing] = useState(forceEdit ?? false);
   const isDesktop = useIsDesktop();
 
   useEffect(() => {
-    setEditing(false);
-  }, [node?.id]);
+    setEditing(forceEdit ?? false);
+  }, [node?.id, forceEdit]);
 
   return (
     <AnimatePresence>
@@ -90,7 +106,28 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                   </>
                 )}
               </div>
+
               <div className="mt-0.5 flex shrink-0 items-center gap-1.5">
+                {/* Reorder arrows — only in edit mode when there are siblings to swap with */}
+                {editing && (canMoveUp || canMoveDown) && (
+                  <div className="flex flex-col">
+                    <button
+                      onClick={onMoveUp}
+                      disabled={!canMoveUp}
+                      className="p-0.5 text-bone-100/30 transition-colors hover:text-bone-100/70 disabled:opacity-0"
+                    >
+                      <ChevronUp size={13} />
+                    </button>
+                    <button
+                      onClick={onMoveDown}
+                      disabled={!canMoveDown}
+                      className="p-0.5 text-bone-100/30 transition-colors hover:text-bone-100/70 disabled:opacity-0"
+                    >
+                      <ChevronDown size={13} />
+                    </button>
+                  </div>
+                )}
+
                 {onUpdate && (
                   <button
                     onClick={() => setEditing((e) => !e)}
@@ -123,13 +160,27 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                     rows={6}
                     className="w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/75 placeholder:text-bone-100/25 focus:outline-none"
                   />
-                  <button
-                    onClick={() => { onUpdate?.({ hidden: true }); onClose(); }}
-                    className="mt-4 flex items-center gap-1.5 text-xs text-red-400/60 transition-colors hover:text-red-400"
-                  >
-                    <Trash2 size={12} />
-                    Delete node
-                  </button>
+                  <div className="mt-5 flex flex-col gap-3 border-t border-white/[0.06] pt-4">
+                    {onAddChild && (
+                      <button
+                        onClick={onAddChild}
+                        className="flex items-center gap-1.5 text-xs text-signal-400/60 transition-colors hover:text-signal-400"
+                      >
+                        <Plus size={12} />
+                        Add child node
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        onUpdate?.({ hidden: true });
+                        onClose();
+                      }}
+                      className="flex items-center gap-1.5 text-xs text-red-400/60 transition-colors hover:text-red-400"
+                    >
+                      <Trash2 size={12} />
+                      Delete node
+                    </button>
+                  </div>
                 </>
               ) : (
                 <>
@@ -157,7 +208,9 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                   ) : null}
 
                   {!node.description && !node.links?.length && (
-                    <p className="text-xs uppercase tracking-wide text-bone-100/30">No details yet</p>
+                    <p className="text-xs uppercase tracking-wide text-bone-100/30">
+                      No details yet
+                    </p>
                   )}
                 </>
               )}
