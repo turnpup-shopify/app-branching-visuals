@@ -119,45 +119,6 @@
         ]
       },
       {
-        "id": "start-more",
-        "title": "jumpstart creativity 🎇",
-        "blurb": "20-sec-friction + outlast boredom",
-        "description": "",
-        "accent": "ink",
-        "children": [
-          {
-            "id": "node-1785628142685",
-            "title": "Engage from micro curiosity",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "node-1785628561434",
-                "title": "",
-                "accent": "ink",
-                "hidden": true
-              }
-            ]
-          },
-          {
-            "id": "node-1785628611160",
-            "title": "Paper & Pen Time",
-            "accent": "ink"
-          },
-          {
-            "id": "node-1785628917848",
-            "title": "Deep Dive 1 Niche Expert - Learn Names",
-            "accent": "ink",
-            "blurb": "Make it small niche so you can do in a day "
-          },
-          {
-            "id": "node-1785628967091",
-            "title": "Ask a question about something you can’t answer ",
-            "accent": "ink",
-            "blurb": "what does that building have different colored brick on 3rd floor? "
-          }
-        ]
-      },
-      {
         "id": "strengths",
         "title": "abt strengths 💪",
         "blurb": "What comes naturally",
@@ -226,6 +187,45 @@
             "title": "think differently",
             "accent": "ink",
             "blurb": "distant jumps, devils advocate"
+          }
+        ]
+      },
+      {
+        "id": "start-more",
+        "title": "jumpstart creativity 🎇",
+        "blurb": "20-sec-friction + outlast boredom",
+        "description": "",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "node-1785628142685",
+            "title": "Engage from micro curiosity",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "node-1785628561434",
+                "title": "",
+                "accent": "ink",
+                "hidden": true
+              }
+            ]
+          },
+          {
+            "id": "node-1785628611160",
+            "title": "Paper & Pen Time",
+            "accent": "ink"
+          },
+          {
+            "id": "node-1785628917848",
+            "title": "Deep Dive 1 Niche Expert - Learn Names",
+            "accent": "ink",
+            "blurb": "Make it small niche so you can do in a day "
+          },
+          {
+            "id": "node-1785628967091",
+            "title": "Ask a question about something you can’t answer ",
+            "accent": "ink",
+            "blurb": "what does that building have different colored brick on 3rd floor? "
           }
         ]
       },
