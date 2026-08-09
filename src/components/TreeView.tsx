@@ -17,7 +17,10 @@ export function TreeView({ root, onSelectNode, selectedId, editMode, onDeleteNod
   return (
     <div className="h-full overflow-y-auto scrollbar-none">
       <div className="flex flex-col gap-1.5 px-3 pt-2 pb-10 md:mx-auto md:w-[min(92vw,640px)]">
-        <div className="px-1 pb-1 pt-0.5">
+        <div
+          className={`px-1 pb-1 pt-0.5 ${editMode ? "cursor-pointer rounded-xl transition-colors hover:bg-white/5" : ""}`}
+          onClick={() => editMode && onSelectNode(root)}
+        >
           <h1 className="font-display text-2xl font-bold leading-tight text-bone-50">{root.title}</h1>
           {root.blurb && <p className="mt-0.5 text-xs font-medium text-signal-400">{root.blurb}</p>}
         </div>
@@ -70,7 +73,7 @@ function TopBranch({
         <button
           className="min-w-0 flex-1 px-4 py-3 text-left"
           onClick={() => {
-            if (hasContent || !hasChildren) onSelect(node);
+            if (editMode || hasContent || !hasChildren) onSelect(node);
             if (hasChildren) setOpen((o) => !o);
           }}
         >
@@ -169,7 +172,7 @@ function SubBranch({
         <button
           className="min-w-0 flex-1 px-2.5 py-2 text-left"
           onClick={() => {
-            if (hasContent || !hasChildren) onSelect(node);
+            if (editMode || hasContent || !hasChildren) onSelect(node);
             if (hasChildren) setOpen((o) => !o);
           }}
         >
