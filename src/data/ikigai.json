@@ -238,7 +238,8 @@
             "id": "love-5",
             "title": "Dune / spy shows"
           }
-        ]
+        ],
+        "hidden": true
       },
       {
         "id": "accomplishments",
