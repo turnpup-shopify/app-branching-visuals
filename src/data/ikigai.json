@@ -9,19 +9,107 @@
     "accent": "signal",
     "children": [
       {
+        "id": "north-stars",
+        "title": "The Plan 🧿 🪑 🛠️",
+        "blurb": "Ecom for inspired, fun shopping.",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "ns-products",
+            "title": "🛖 Products",
+            "blurb": "Physical forms that slow and inspire",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-p-1",
+                "title": "Shelves"
+              },
+              {
+                "id": "ns-p-2",
+                "title": "Hooks"
+              },
+              {
+                "id": "ns-p-3",
+                "title": "Stools"
+              },
+              {
+                "id": "ns-p-4",
+                "title": "Small tables"
+              },
+              {
+                "id": "ns-p-5",
+                "title": "Stackable"
+              },
+              {
+                "id": "ns-p-6",
+                "title": "Modular"
+              }
+            ],
+            "hidden": true
+          },
+          {
+            "id": "ns-portals",
+            "title": "🖥️ Portals",
+            "blurb": "Digital surfaces that open a world",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-po-1",
+                "title": "Galleries"
+              },
+              {
+                "id": "ns-po-2",
+                "title": "Marketing"
+              }
+            ],
+            "hidden": true
+          },
+          {
+            "id": "ns-interactions",
+            "title": "Unique Inspired Vignettes",
+            "blurb": "The human and systemic layer",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-i-1",
+                "title": "Small systems",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-2",
+                "title": "Meetings",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-3",
+                "title": "Processes",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-4",
+                "title": "Questions",
+                "hidden": true
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": "node-1785122534158",
         "title": "❤️ What I Want",
         "accent": "ink",
         "children": [
           {
-            "id": "node-1785122583830",
-            "title": "Smarter Thinker",
-            "accent": "ink"
-          },
-          {
             "id": "node-1785122614582",
             "title": "More Creative",
-            "accent": "ink"
+            "accent": "ink",
+            "blurb": "voice, authentic, blending"
+          },
+          {
+            "id": "node-1785122583830",
+            "title": "Smarter Thinker",
+            "accent": "ink",
+            "blurb": "purposeful, organized, clarity"
           },
           {
             "id": "node-1785122624321",
@@ -70,86 +158,6 @@
         ]
       },
       {
-        "id": "north-stars",
-        "title": "🧭 My North Stars",
-        "blurb": "A life that awes, sparks thought, & slows",
-        "accent": "ink",
-        "children": [
-          {
-            "id": "ns-products",
-            "title": "🛖 Products",
-            "blurb": "Physical forms that slow and inspire",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-p-1",
-                "title": "Shelves"
-              },
-              {
-                "id": "ns-p-2",
-                "title": "Hooks"
-              },
-              {
-                "id": "ns-p-3",
-                "title": "Stools"
-              },
-              {
-                "id": "ns-p-4",
-                "title": "Small tables"
-              },
-              {
-                "id": "ns-p-5",
-                "title": "Stackable"
-              },
-              {
-                "id": "ns-p-6",
-                "title": "Modular"
-              }
-            ]
-          },
-          {
-            "id": "ns-portals",
-            "title": "🖥️ Portals",
-            "blurb": "Digital surfaces that open a world",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-po-1",
-                "title": "Galleries"
-              },
-              {
-                "id": "ns-po-2",
-                "title": "Marketing"
-              }
-            ]
-          },
-          {
-            "id": "ns-interactions",
-            "title": "🪬 Interactions",
-            "blurb": "The human and systemic layer",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-i-1",
-                "title": "Small systems"
-              },
-              {
-                "id": "ns-i-2",
-                "title": "Meetings"
-              },
-              {
-                "id": "ns-i-3",
-                "title": "Processes"
-              },
-              {
-                "id": "ns-i-4",
-                "title": "Questions"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "id": "strengths",
         "title": "🧿 My Strengths",
         "blurb": "What comes naturally",
@@ -177,23 +185,32 @@
       },
       {
         "id": "values",
-        "title": "🌎 What I Value",
+        "title": "More Me",
         "blurb": "What anchors you",
         "accent": "ink",
         "children": [
+          {
+            "id": "node-1786293554902",
+            "title": "creativity",
+            "accent": "ink",
+            "blurb": "voice, authentic, blending"
+          },
+          {
+            "id": "value-3",
+            "title": "clarity",
+            "blurb": "organized, purposeful living."
+          },
           {
             "id": "value-1",
             "title": "Gratitude"
           },
           {
             "id": "value-2",
-            "title": "Freedom"
-          },
-          {
-            "id": "value-3",
-            "title": "Creativity"
+            "title": "Freedom",
+            "hidden": true
           }
-        ]
+        ],
+        "hidden": true
       },
       {
         "id": "things-i-love",
