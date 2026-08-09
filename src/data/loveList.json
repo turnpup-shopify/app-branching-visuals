@@ -151,11 +151,46 @@
             "id": "node-1786294147652",
             "title": "Immersive installations (water / light / sound)",
             "accent": "ink"
+          },
+          {
+            "id": "node-1786294332534",
+            "title": "Tiny houses — making do with less",
+            "accent": "ink"
           }
         ]
       },
       {
         "id": "node-1786294143091",
+        "title": "",
+        "accent": "ink",
+        "hidden": true
+      },
+      {
+        "id": "node-1786294228085",
+        "title": "Movies / Shows",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "node-1786294232468",
+            "title": "Dune",
+            "accent": "ink"
+          },
+          {
+            "id": "node-1786294249418",
+            "title": "Oddysey",
+            "accent": "ink",
+            "hidden": true
+          },
+          {
+            "id": "node-1786294255985",
+            "title": "",
+            "accent": "ink",
+            "hidden": true
+          }
+        ]
+      },
+      {
+        "id": "node-1786294327569",
         "title": "",
         "accent": "ink",
         "hidden": true
