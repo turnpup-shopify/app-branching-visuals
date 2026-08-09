@@ -29,24 +29,27 @@ type SyncState = "idle" | "needs-token" | "syncing" | "done" | "error";
 
 async function pushToGitHub(
   token: string,
-  trees: TreeDef[],
   overrides: Record<string, Partial<TreeNode>>,
   additions: Record<string, TreeNode[]>,
   reorders: Record<string, string[]>,
 ) {
-  for (const tree of trees) {
-    const path = FILE_PATHS[tree.id];
-    if (!path) continue;
-    const merged = { ...tree, root: deepMerge(tree.root, overrides, additions, reorders) };
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json",
-    };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: "application/vnd.github+json",
+    "Content-Type": "application/json",
+  };
+
+  for (const path of Object.values(FILE_PATHS)) {
+    // Always fetch the current file from GitHub as the base — never use the
+    // local bundle, which may be older than what another device last synced.
     const meta = await fetch(
       `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
       { headers },
-    ).then((r) => r.json() as Promise<{ sha: string }>);
+    ).then((r) => r.json() as Promise<{ sha: string; content: string }>);
+
+    const base: TreeDef = JSON.parse(atob(meta.content.replace(/\n/g, "")));
+    const merged = { ...base, root: deepMerge(base.root, overrides, additions, reorders) };
+
     const body = JSON.stringify(merged, null, 2);
     const content = btoa(unescape(encodeURIComponent(body)));
     const res = await fetch(
@@ -98,7 +101,7 @@ export function EditPanel({
 
   const runSync = (token: string) => {
     setSyncState("syncing");
-    pushToGitHub(token, trees, overrides, additions, reorders)
+    pushToGitHub(token, overrides, additions, reorders)
       .then(() => {
         setSyncState("done");
         // Keep bv-reorders: the new JSON has the order baked in after sync,
