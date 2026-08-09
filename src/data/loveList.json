@@ -112,7 +112,8 @@
           },
           {
             "id": "love-a-3",
-            "title": "Architecture"
+            "title": "Architecture",
+            "blurb": "Brutalism"
           },
           {
             "id": "love-a-4",
@@ -139,6 +140,25 @@
             "title": "Collaboration"
           }
         ]
+      },
+      {
+        "id": "node-1786294131173",
+        "title": "Creating",
+        "accent": "ink",
+        "description": "",
+        "children": [
+          {
+            "id": "node-1786294147652",
+            "title": "Immersive installations (water / light / sound)",
+            "accent": "ink"
+          }
+        ]
+      },
+      {
+        "id": "node-1786294143091",
+        "title": "",
+        "accent": "ink",
+        "hidden": true
       }
     ]
   }
