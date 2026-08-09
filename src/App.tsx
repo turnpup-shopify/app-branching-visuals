@@ -123,15 +123,23 @@ function App() {
         )}
       </header>
 
-      <main className="relative min-h-0 w-full flex-1">
-        <TreeView
-          root={mergedRoot}
-          onSelectNode={(node) => setSelectedNodeId(node.id)}
-          selectedId={selectedNodeId ?? undefined}
-          editMode={editMode}
-          onDeleteNode={handleDeleteNode}
-          onAddSibling={(parentId) => handleAddChild(parentId)}
-        />
+      <main className="relative min-h-0 w-full flex-1 overflow-hidden">
+        <div
+          className={`h-full transition-[padding] duration-300 ease-out ${
+            selectedNode && !editMode ? "md:pr-80" : ""
+          }`}
+        >
+          <TreeView
+            root={mergedRoot}
+            onSelectNode={(node) =>
+              setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+            }
+            selectedId={selectedNodeId ?? undefined}
+            editMode={editMode}
+            onDeleteNode={handleDeleteNode}
+            onAddSibling={(parentId) => handleAddChild(parentId)}
+          />
+        </div>
         {!editMode && (
           <NodeSheet
             node={selectedNode}

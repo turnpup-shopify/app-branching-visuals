@@ -3,6 +3,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Pencil, Check, Trash2, X } from "lucide-react";
 import type { TreeNode } from "../types";
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia("(min-width: 768px)").matches : false,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isDesktop;
+}
+
 interface Props {
   node: TreeNode | null;
   onClose: () => void;
@@ -11,6 +24,7 @@ interface Props {
 
 export function NodeSheet({ node, onClose, onUpdate }: Props) {
   const [editing, setEditing] = useState(false);
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     setEditing(false);
@@ -20,29 +34,34 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
     <AnimatePresence>
       {node && (
         <>
+          {/* Backdrop — mobile only */}
           <motion.div
             key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="absolute inset-0 bg-ink-900/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-ink-900/50 backdrop-blur-sm md:hidden"
             onClick={onClose}
           />
+
           <motion.div
             key="sheet"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
+            initial={isDesktop ? { x: "100%" } : { y: "100%" }}
+            animate={isDesktop ? { x: 0 } : { y: 0 }}
+            exit={isDesktop ? { x: "100%" } : { y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 320 }}
-            className="glass-strong absolute inset-x-0 bottom-0 flex max-h-[80dvh] flex-col rounded-t-3xl md:left-1/2 md:w-[min(92vw,640px)] md:-translate-x-1/2"
+            className="glass-strong absolute flex flex-col
+              inset-x-0 bottom-0 max-h-[80dvh] rounded-t-3xl
+              md:inset-x-auto md:inset-y-0 md:right-0 md:w-80 md:max-h-full md:rounded-l-3xl md:rounded-tr-none md:rounded-br-none md:border-l md:border-white/[0.07]"
           >
-            <div className="flex shrink-0 justify-center pb-0.5 pt-3">
+            {/* Drag handle — mobile only */}
+            <div className="flex shrink-0 justify-center pb-0.5 pt-3 md:hidden">
               <div className="h-1 w-8 rounded-full bg-white/20" />
             </div>
 
             {/* Header */}
-            <div className="flex shrink-0 items-start justify-between gap-3 px-5 pb-2 pt-3">
+            <div className="flex shrink-0 items-start justify-between gap-3 px-5 pb-2 pt-3 md:pt-5">
               <div className="min-w-0 flex-1">
                 {editing ? (
                   <>
@@ -51,6 +70,7 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                       onChange={(e) => onUpdate?.({ title: e.target.value })}
                       className="w-full bg-transparent font-display text-xl font-semibold leading-tight text-bone-50 focus:outline-none"
                       placeholder="Title"
+                      autoFocus
                     />
                     <input
                       value={node.blurb ?? ""}
@@ -70,7 +90,7 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                   </>
                 )}
               </div>
-              <div className="flex shrink-0 items-center gap-1.5 mt-0.5">
+              <div className="mt-0.5 flex shrink-0 items-center gap-1.5">
                 {onUpdate && (
                   <button
                     onClick={() => setEditing((e) => !e)}
@@ -100,7 +120,7 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                     value={node.description ?? ""}
                     onChange={(e) => onUpdate?.({ description: e.target.value })}
                     placeholder="Description…"
-                    rows={5}
+                    rows={6}
                     className="w-full resize-none bg-transparent text-sm leading-relaxed text-bone-100/75 placeholder:text-bone-100/25 focus:outline-none"
                   />
                   <button
@@ -111,7 +131,6 @@ export function NodeSheet({ node, onClose, onUpdate }: Props) {
                     Delete node
                   </button>
                 </>
-
               ) : (
                 <>
                   {node.description && (
