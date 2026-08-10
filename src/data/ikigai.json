@@ -16,7 +16,7 @@
         "children": [
           {
             "id": "ns-products",
-            "title": "Ã°ÂÂÂ Products",
+            "title": "Products",
             "blurb": "Physical forms that slow and inspire",
             "accent": "ink",
             "children": [
@@ -49,7 +49,7 @@
           },
           {
             "id": "ns-portals",
-            "title": "Ã°ÂÂÂ¥Ã¯Â¸Â Portals",
+            "title": "Portals",
             "blurb": "Digital surfaces that open a world",
             "accent": "ink",
             "children": [
