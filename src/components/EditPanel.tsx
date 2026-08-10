@@ -47,7 +47,9 @@ async function pushToGitHub(
       { headers },
     ).then((r) => r.json() as Promise<{ sha: string; content: string }>);
 
-    const base: TreeDef = JSON.parse(atob(meta.content.replace(/\n/g, "")));
+    const raw = atob(meta.content.replace(/\n/g, ""));
+    const bytes = Uint8Array.from(raw, (c) => c.charCodeAt(0));
+    const base: TreeDef = JSON.parse(new TextDecoder().decode(bytes));
     const merged = { ...base, root: deepMerge(base.root, overrides, additions, reorders) };
 
     const body = JSON.stringify(merged, null, 2);
