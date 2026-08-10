@@ -10,7 +10,7 @@
     "children": [
       {
         "id": "north-stars",
-        "title": "slow building worlds  Ã°ÂÂÂ¥Ã¯Â¸Â Ã°ÂÂªÂ Ã°ÂÂÂ Ã¯Â¸Â",
+        "title": "slow building worlds 🪑 🛠️",
         "blurb": "Ecom for inspired, fun shopping.",
         "accent": "ink",
         "children": [
@@ -96,7 +96,7 @@
       },
       {
         "id": "node-1785122534158",
-        "title": "+1% better everyday Ã°ÂÂ§Â¿ ",
+        "title": "+1% better everyday ⚙️",
         "accent": "ink",
         "children": [
           {
@@ -120,8 +120,49 @@
         ]
       },
       {
+        "id": "start-more",
+        "title": "jumpstart creativity 🎇",
+        "blurb": "20-sec-friction + outlast boredom",
+        "description": "",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "node-1785628142685",
+            "title": "Engage from micro curiosity",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "node-1785628561434",
+                "title": "",
+                "accent": "ink",
+                "hidden": true
+              }
+            ],
+            "blurb": "nuanced curiosity rabbit holes "
+          },
+          {
+            "id": "node-1785628611160",
+            "title": "Paper & Pen Time",
+            "accent": "ink",
+            "blurb": "journal, remix, ideate"
+          },
+          {
+            "id": "node-1785628917848",
+            "title": "Deep Dive 1 Niche Expert - Learn Names",
+            "accent": "ink",
+            "blurb": "Make it small niche so you can do in a day "
+          },
+          {
+            "id": "node-1785628967091",
+            "title": "Ask a question about something you canÃ¢ÂÂt answer ",
+            "accent": "ink",
+            "blurb": "what does that building have different colored brick on 3rd floor? "
+          }
+        ]
+      },
+      {
         "id": "strengths",
-        "title": "abt strengths Ã°ÂÂÂª",
+        "title": "abt strengths 💪",
         "blurb": "What comes naturally",
         "accent": "ink",
         "children": [
@@ -147,7 +188,7 @@
       },
       {
         "id": "accomplishments",
-        "title": "innate worth + more  Ã°ÂÂÂ",
+        "title": "innate worth + more  🏆",
         "blurb": "Work that speaks",
         "accent": "ink",
         "children": [
@@ -189,47 +230,6 @@
             "title": "think differently",
             "accent": "ink",
             "blurb": "distant jumps, devils advocate"
-          }
-        ]
-      },
-      {
-        "id": "start-more",
-        "title": "jumpstart creativity Ã°ÂÂÂ",
-        "blurb": "20-sec-friction + outlast boredom",
-        "description": "",
-        "accent": "ink",
-        "children": [
-          {
-            "id": "node-1785628142685",
-            "title": "Engage from micro curiosity",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "node-1785628561434",
-                "title": "",
-                "accent": "ink",
-                "hidden": true
-              }
-            ],
-            "blurb": "nuanced curiosity rabbit holes "
-          },
-          {
-            "id": "node-1785628611160",
-            "title": "Paper & Pen Time",
-            "accent": "ink",
-            "blurb": "journal, remix, ideate"
-          },
-          {
-            "id": "node-1785628917848",
-            "title": "Deep Dive 1 Niche Expert - Learn Names",
-            "accent": "ink",
-            "blurb": "Make it small niche so you can do in a day "
-          },
-          {
-            "id": "node-1785628967091",
-            "title": "Ask a question about something you canÃ¢ÂÂt answer ",
-            "accent": "ink",
-            "blurb": "what does that building have different colored brick on 3rd floor? "
           }
         ]
       },
