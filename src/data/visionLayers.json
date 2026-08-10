@@ -14,20 +14,22 @@
         "title": "Believe",
         "blurb": "Slowest layer Ã¢ÂÂ identity",
         "description": "Most people inherit their space, taste, and days by default.\n\nI choose mine. On purpose.\n\nNot slow. Intentional. Deliberate can be fast.",
-        "accent": "ink"
+        "accent": "ink",
+        "hidden": true
       },
       {
         "id": "why",
         "title": "Why",
         "blurb": "Direction",
         "description": "The world will pull me a hundred directions. I could chase any of them.\n\nThat is why I pick one on purpose.\n\nPermission to go my own way, knowing I could go any other. To be truer to myself. To get one percent better every day.\n\nThe check. Am I building toward what matters, or away from the hard thing.",
-        "accent": "ink"
+        "accent": "ink",
+        "hidden": true
       },
       {
         "id": "what",
         "title": "What",
         "blurb": "1-3 year strategy",
-        "description": "Not furniture. What a space does to a life.\n\nA home is a gallery of you. Every piece on display says this is who I am. Most people let it curate itself by accident. I help them curate it on purpose.\n\nThe space is the path. The feeling is the point. One percent happier, more yourself, every day.\n\nMy lens is what I am good at. Ecommerce, furniture, hardware, design. Not my limit. My way in.",
+        "description": "(1) optimize uttermost\n(2) price markdowns dynamically\n(3) room vignettes\n(4) pinterest automated content daily",
         "accent": "ink"
       },
       {
