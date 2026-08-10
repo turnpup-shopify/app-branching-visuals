@@ -142,7 +142,7 @@ export function EditPanel({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      className="absolute inset-x-3 inset-y-3 z-30 flex flex-col overflow-hidden rounded-3xl glass-panel md:inset-x-auto md:left-1/2 md:inset-y-6 md:w-[min(92vw,640px)] md:-translate-x-1/2"
+      className="absolute inset-x-3 inset-y-3 z-30 flex flex-col overflow-hidden rounded-3xl glass-solid md:inset-x-auto md:left-1/2 md:inset-y-6 md:w-[min(92vw,640px)] md:-translate-x-1/2"
     >
       <div className="flex shrink-0 flex-col border-b border-white/10 px-5 py-4 gap-3">
         <div className="flex items-center justify-between">
