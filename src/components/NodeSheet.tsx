@@ -67,7 +67,7 @@ export function NodeSheet({
             animate={isDesktop ? { x: 0 } : { y: 0 }}
             exit={isDesktop ? { x: "100%" } : { y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 320 }}
-            className="glass-strong absolute flex flex-col
+            className="glass-panel absolute flex flex-col
               inset-x-0 bottom-0 max-h-[80dvh] rounded-t-3xl
               md:inset-x-auto md:inset-y-0 md:right-0 md:w-80 md:max-h-full md:rounded-l-3xl md:rounded-tr-none md:rounded-br-none md:border-l md:border-white/[0.07]"
           >
