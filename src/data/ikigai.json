@@ -9,101 +9,15 @@
     "accent": "signal",
     "children": [
       {
-        "id": "north-stars",
-        "title": "slow building worlds 🪑 🛠️",
-        "blurb": "Ecom for inspired, fun shopping.",
-        "accent": "ink",
-        "children": [
-          {
-            "id": "ns-products",
-            "title": "Products",
-            "blurb": "Physical forms that slow and inspire",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-p-1",
-                "title": "Shelves"
-              },
-              {
-                "id": "ns-p-2",
-                "title": "Hooks"
-              },
-              {
-                "id": "ns-p-3",
-                "title": "Stools"
-              },
-              {
-                "id": "ns-p-4",
-                "title": "Small tables"
-              },
-              {
-                "id": "ns-p-5",
-                "title": "Stackable"
-              },
-              {
-                "id": "ns-p-6",
-                "title": "Modular"
-              }
-            ],
-            "hidden": true
-          },
-          {
-            "id": "ns-portals",
-            "title": "Portals",
-            "blurb": "Digital surfaces that open a world",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-po-1",
-                "title": "Galleries"
-              },
-              {
-                "id": "ns-po-2",
-                "title": "Marketing"
-              }
-            ],
-            "hidden": true
-          },
-          {
-            "id": "ns-interactions",
-            "title": "Unique Inspired Vignettes",
-            "blurb": "The human and systemic layer",
-            "accent": "ink",
-            "children": [
-              {
-                "id": "ns-i-1",
-                "title": "Small systems",
-                "hidden": true
-              },
-              {
-                "id": "ns-i-2",
-                "title": "Meetings",
-                "hidden": true
-              },
-              {
-                "id": "ns-i-3",
-                "title": "Processes",
-                "hidden": true
-              },
-              {
-                "id": "ns-i-4",
-                "title": "Questions",
-                "hidden": true
-              }
-            ]
-          }
-        ]
-      },
-      {
         "id": "node-1785122534158",
-        "title": "+1% better everyday ⚙️",
+        "title": " 🪬",
         "accent": "ink",
         "children": [
           {
             "id": "node-1785122614582",
-            "title": "More Creative",
+            "title": "Creativity: your unique take",
             "accent": "ink",
-            "blurb": "voice, authentic, blending"
+            "blurb": "authenticity + play + why not"
           },
           {
             "id": "node-1785122583830",
@@ -116,6 +30,33 @@
             "title": "Better Community",
             "accent": "ink",
             "blurb": "make people better"
+          }
+        ],
+        "blurb": "Creating Meaning"
+      },
+      {
+        "id": "node-1789154673283",
+        "title": "💙",
+        "accent": "ink",
+        "blurb": "discovering meaning",
+        "children": [
+          {
+            "id": "node-1789154678839",
+            "title": "Intentional Physical Environments",
+            "accent": "ink",
+            "description": "A pull toward well designed spaces and the systems behind them. Coffee, shops, showrooms, home vignettes, and digital landscapes."
+          },
+          {
+            "id": "node-1789154795917",
+            "title": "Immersive Awe",
+            "accent": "ink",
+            "description": "A run in nature to a good song, a game of basketball, skateboarding down an alley, the feeling of salty ocean water."
+          },
+          {
+            "id": "node-1789154871815",
+            "title": "Improving Well-being",
+            "accent": "ink",
+            "description": "Finding meaning through responsibility. Bettering your community. Leading a four person team. Managing your parents Store. A collectivist mentality."
           }
         ]
       },
@@ -230,6 +171,92 @@
             "title": "Ask a question about something you cant answer ",
             "accent": "ink",
             "blurb": "what does that building have different colored brick on 3rd floor? "
+          }
+        ]
+      },
+      {
+        "id": "north-stars",
+        "title": "slow building worlds 🪑 🛠️",
+        "blurb": "Ecom for inspired, fun shopping.",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "ns-products",
+            "title": "Products",
+            "blurb": "Physical forms that slow and inspire",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-p-1",
+                "title": "Shelves"
+              },
+              {
+                "id": "ns-p-2",
+                "title": "Hooks"
+              },
+              {
+                "id": "ns-p-3",
+                "title": "Stools"
+              },
+              {
+                "id": "ns-p-4",
+                "title": "Small tables"
+              },
+              {
+                "id": "ns-p-5",
+                "title": "Stackable"
+              },
+              {
+                "id": "ns-p-6",
+                "title": "Modular"
+              }
+            ],
+            "hidden": true
+          },
+          {
+            "id": "ns-portals",
+            "title": "Portals",
+            "blurb": "Digital surfaces that open a world",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-po-1",
+                "title": "Galleries"
+              },
+              {
+                "id": "ns-po-2",
+                "title": "Marketing"
+              }
+            ],
+            "hidden": true
+          },
+          {
+            "id": "ns-interactions",
+            "title": "Unique Inspired Vignettes",
+            "blurb": "The human and systemic layer",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "ns-i-1",
+                "title": "Small systems",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-2",
+                "title": "Meetings",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-3",
+                "title": "Processes",
+                "hidden": true
+              },
+              {
+                "id": "ns-i-4",
+                "title": "Questions",
+                "hidden": true
+              }
+            ]
           }
         ]
       },
