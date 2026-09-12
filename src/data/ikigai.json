@@ -4,8 +4,8 @@
   "tagline": "The compass behind how you decide, create, and live.",
   "root": {
     "id": "ikigai-root",
-    "title": "Ikigai",
-    "blurb": "",
+    "title": "ikigai",
+    "blurb": "Play More. Love Better. Work Smarter. ",
     "accent": "signal",
     "children": [
       {
