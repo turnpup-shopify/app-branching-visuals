@@ -5,7 +5,7 @@
   "root": {
     "id": "ikigai-root",
     "title": "ikigai",
-    "blurb": "Play More. Love Better. Work Smarter. ",
+    "blurb": "Play More. Love Better. Work Smarter. Think Clearer. ",
     "accent": "signal",
     "children": [
       {
@@ -254,6 +254,26 @@
               {
                 "id": "ns-i-4",
                 "title": "Questions",
+                "hidden": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "node-1789243206174",
+        "title": "Thinking…",
+        "accent": "ink",
+        "children": [
+          {
+            "id": "node-1789243243985",
+            "title": "break big things into small things",
+            "accent": "ink",
+            "children": [
+              {
+                "id": "node-1789243245131",
+                "title": "Break Things Down into Small Pieces",
+                "accent": "ink",
                 "hidden": true
               }
             ]
